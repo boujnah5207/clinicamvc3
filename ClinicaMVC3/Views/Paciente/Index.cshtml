@@ -1,0 +1,67 @@
+﻿@model IEnumerable<ClinicaMVC3.Models.Paciente>
+
+@{
+    
+}
+
+<h2> Listagem de @ViewBag.Title </h2>
+
+<p>
+    @Html.ActionLink("Novo", "Create")
+</p>
+
+@if (Model.Count()==0) {
+	<span>Não há registros para listar.</span>
+}else{
+
+
+<table>
+    <tr>
+        <th>
+			@foreach (var item in Model)
+            {
+				@Html.LabelFor(model => item.Nome)
+				break;
+			}
+         </th>
+
+        <th>
+			@foreach (var item in Model)
+            {
+				@Html.LabelFor(model => item.Endereco)
+				break;
+			}
+         </th>
+
+        <th>
+			@foreach (var item in Model)
+            {
+				@Html.LabelFor(model => item.ObservacaoMedico)
+				break;
+			}
+         </th>
+
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Nome)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Endereco)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ObservacaoMedico)
+        </td>
+        <td>
+            @Html.ActionLink("Editar", "Edit", new { id=item.PacienteId }) |
+            @Html.ActionLink("Visualizar", "Details", new { id=item.PacienteId }) |
+            @Html.ActionLink("Excluir", "Delete", new { id=item.PacienteId })
+        </td>
+    </tr>
+}
+
+</table>
+}

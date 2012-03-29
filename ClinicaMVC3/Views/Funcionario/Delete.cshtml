@@ -1,0 +1,60 @@
+﻿@model ClinicaMVC3.Models.Funcionario
+
+@{
+}
+
+<h2>@ViewBag.Title</h2>
+<h3>Exclusão de registro</h3>
+
+<span>Você tem certeza que deseja excluir este registro?</span>
+
+@using (Html.BeginForm()) {
+	<fieldset>
+		@Html.HiddenFor(model => model.FuncionarioId)
+		<div class="display-label">
+			@Html.LabelFor(model => model.Nome)
+		</div
+
+		<div class="display-field">
+			@Html.DisplayFor(model => model.Nome)
+		</div>
+
+		<div class="display-label">
+            @Html.LabelFor(model => model.RG)
+		</div>
+
+		<div class="display-field">
+			@Html.DisplayFor(model => model.RG)
+		</div>
+
+		<div class="display-label">
+			@Html.LabelFor(model => model.UserId)
+		</div>
+
+		<div class="display-field">
+			@Html.DisplayFor(model => model.UserId)
+		</div>
+
+		<div class="display-label">
+			@Html.LabelFor(model => model.endereco)
+		</div>
+
+		<div class="display-field">
+			@Html.DisplayFor(model => model.endereco)
+		</div>
+
+		    		
+		<div class="display-label">
+			@Html.LabelFor(model => model.funcao)
+		</div>
+
+		<div class="display-field">
+			@Html.DisplayFor(model => model.funcao)
+		</div>
+		<p>
+			<input type="submit" value="Excluir" /> |
+			@Html.ActionLink("Voltar", "Index")
+		</p>
+	</fieldset>
+
+}

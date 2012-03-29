@@ -1,0 +1,10 @@
+C:\Users\Evandro\documents\visual studio 2010\Projects\ClinicaMVC3\ClinicaMVC3\bin\ClinicaMVC3.dll
+C:\Users\Evandro\documents\visual studio 2010\Projects\ClinicaMVC3\ClinicaMVC3\bin\ClinicaMVC3.pdb
+C:\Users\Evandro\documents\visual studio 2010\Projects\ClinicaMVC3\ClinicaMVC3\bin\DataAnnotationsExtensions.ClientValidation.dll
+C:\Users\Evandro\documents\visual studio 2010\Projects\ClinicaMVC3\ClinicaMVC3\bin\DataAnnotationsExtensions.dll
+C:\Users\Evandro\documents\visual studio 2010\Projects\ClinicaMVC3\ClinicaMVC3\bin\EntityFramework.dll
+C:\Users\Evandro\documents\visual studio 2010\Projects\ClinicaMVC3\ClinicaMVC3\bin\WebActivator.dll
+C:\Users\Evandro\documents\visual studio 2010\Projects\ClinicaMVC3\ClinicaMVC3\bin\EntityFramework.xml
+C:\Users\Evandro\documents\visual studio 2010\Projects\ClinicaMVC3\ClinicaMVC3\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\Evandro\documents\visual studio 2010\Projects\ClinicaMVC3\ClinicaMVC3\obj\Debug\ClinicaMVC3.dll
+C:\Users\Evandro\documents\visual studio 2010\Projects\ClinicaMVC3\ClinicaMVC3\obj\Debug\ClinicaMVC3.pdb
