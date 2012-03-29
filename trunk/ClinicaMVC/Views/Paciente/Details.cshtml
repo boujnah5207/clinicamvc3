@@ -1,0 +1,38 @@
+﻿@model ClinicaMVC.Models.Paciente
+
+@{    
+}
+
+<h2>@ViewBag.Title</h2>
+<h3>Visualização de registro</h3>
+
+<fieldset>
+
+    <div class="display-label">
+				@Html.LabelFor(model => model.Nome)
+		
+	</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Nome)
+    </div>
+
+    <div class="display-label">
+				@Html.LabelFor(model => model.Endereco)
+		
+	</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Endereco)
+    </div>
+
+    <div class="display-label">
+				@Html.LabelFor(model => model.ObservacaoMedico)
+		
+	</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.ObservacaoMedico)
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Editar", "Edit", new { id=Model.PacienteId }) |
+    @Html.ActionLink("Voltar", "Index")
+</p>

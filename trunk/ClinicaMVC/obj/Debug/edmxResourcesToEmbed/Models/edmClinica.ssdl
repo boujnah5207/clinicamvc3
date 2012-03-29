@@ -1,0 +1,219 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="ClinicaModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+  <EntityContainer Name="ClinicaModelStoreContainer">
+    <EntitySet Name="Consulta" EntityType="ClinicaModel.Store.Consulta" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Especialidade" EntityType="ClinicaModel.Store.Especialidade" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Funcionario" EntityType="ClinicaModel.Store.Funcionario" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="FuncionarioEspecialidade" EntityType="ClinicaModel.Store.FuncionarioEspecialidade" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="FuncionarioTelefone" EntityType="ClinicaModel.Store.FuncionarioTelefone" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Paciente" EntityType="ClinicaModel.Store.Paciente" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="PacienteTelefone" EntityType="ClinicaModel.Store.PacienteTelefone" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="PlanoSaude" EntityType="ClinicaModel.Store.PlanoSaude" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Telefone" EntityType="ClinicaModel.Store.Telefone" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="Consulta_MedicoId" Association="ClinicaModel.Store.Consulta_MedicoId">
+      <End Role="Funcionario" EntitySet="Funcionario" />
+      <End Role="Consulta" EntitySet="Consulta" />
+    </AssociationSet>
+    <AssociationSet Name="Consulta_Paciente" Association="ClinicaModel.Store.Consulta_Paciente">
+      <End Role="Paciente" EntitySet="Paciente" />
+      <End Role="Consulta" EntitySet="Consulta" />
+    </AssociationSet>
+    <AssociationSet Name="FuncionarioEspecialidade_EspecialidadeId" Association="ClinicaModel.Store.FuncionarioEspecialidade_EspecialidadeId">
+      <End Role="Especialidade" EntitySet="Especialidade" />
+      <End Role="FuncionarioEspecialidade" EntitySet="FuncionarioEspecialidade" />
+    </AssociationSet>
+    <AssociationSet Name="FuncionarioEspecialidade_FuncionarioId" Association="ClinicaModel.Store.FuncionarioEspecialidade_FuncionarioId">
+      <End Role="Funcionario" EntitySet="Funcionario" />
+      <End Role="FuncionarioEspecialidade" EntitySet="FuncionarioEspecialidade" />
+    </AssociationSet>
+    <AssociationSet Name="FuncionarioTelefone_Funcionario" Association="ClinicaModel.Store.FuncionarioTelefone_Funcionario">
+      <End Role="Funcionario" EntitySet="Funcionario" />
+      <End Role="FuncionarioTelefone" EntitySet="FuncionarioTelefone" />
+    </AssociationSet>
+    <AssociationSet Name="FuncionarioTelefone_Telefone" Association="ClinicaModel.Store.FuncionarioTelefone_Telefone">
+      <End Role="Telefone" EntitySet="Telefone" />
+      <End Role="FuncionarioTelefone" EntitySet="FuncionarioTelefone" />
+    </AssociationSet>
+    <AssociationSet Name="PacienteTelefone_Paciente" Association="ClinicaModel.Store.PacienteTelefone_Paciente">
+      <End Role="Paciente" EntitySet="Paciente" />
+      <End Role="PacienteTelefone" EntitySet="PacienteTelefone" />
+    </AssociationSet>
+    <AssociationSet Name="PacienteTelefone_Telefone" Association="ClinicaModel.Store.PacienteTelefone_Telefone">
+      <End Role="Telefone" EntitySet="Telefone" />
+      <End Role="PacienteTelefone" EntitySet="PacienteTelefone" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Consulta">
+    <Key>
+      <PropertyRef Name="ConsultaId" />
+    </Key>
+    <Property Name="ConsultaId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="PacienteId" Type="int" Nullable="false" />
+    <Property Name="MedicoId" Type="int" Nullable="false" />
+    <Property Name="Data" Type="date" Nullable="false" />
+    <Property Name="Hora" Type="time" Nullable="false" />
+    <Property Name="Status" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Especialidade">
+    <Key>
+      <PropertyRef Name="EspecialidadeId" />
+    </Key>
+    <Property Name="EspecialidadeId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="Descricao" Type="varchar" Nullable="false" MaxLength="100" />
+  </EntityType>
+  <EntityType Name="Funcionario">
+    <Key>
+      <PropertyRef Name="FuncionarioId" />
+    </Key>
+    <Property Name="FuncionarioId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="Nome" Type="varchar" Nullable="false" MaxLength="100" />
+    <Property Name="RG" Type="varchar" Nullable="false" MaxLength="11" />
+    <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="endereco" Type="varchar" Nullable="false" MaxLength="150" />
+    <Property Name="funcao" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="FuncionarioEspecialidade">
+    <Key>
+      <PropertyRef Name="FuncionarioEspecialidadeId" />
+    </Key>
+    <Property Name="FuncionarioEspecialidadeId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="FuncionarioId" Type="int" Nullable="false" />
+    <Property Name="EspecialidadeId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="FuncionarioTelefone">
+    <Key>
+      <PropertyRef Name="FuncionarioTelefoneId" />
+    </Key>
+    <Property Name="FuncionarioTelefoneId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="FuncionarioId" Type="int" Nullable="false" />
+    <Property Name="TelefoneId" Type="int" Nullable="false" StoreGeneratedPattern="None" />
+  </EntityType>
+  <EntityType Name="Paciente">
+    <Key>
+      <PropertyRef Name="PacienteId" />
+    </Key>
+    <Property Name="PacienteId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="Nome" Type="varchar" Nullable="false" MaxLength="45" />
+    <Property Name="Endereco" Type="varchar" Nullable="false" MaxLength="100" />
+    <Property Name="ObservacaoMedico" Type="varchar" MaxLength="100" />
+  </EntityType>
+  <EntityType Name="PacienteTelefone">
+    <Key>
+      <PropertyRef Name="PacienteTelefoneId" />
+    </Key>
+    <Property Name="PacienteTelefoneId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="PacienteId" Type="int" Nullable="false" />
+    <Property Name="TelefoneId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="PlanoSaude">
+    <Key>
+      <PropertyRef Name="PlanoSaudeId" />
+    </Key>
+    <Property Name="PlanoSaudeId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="Descricao" Type="varchar" Nullable="false" MaxLength="100" />
+  </EntityType>
+  <EntityType Name="Telefone">
+    <Key>
+      <PropertyRef Name="TelefoneId" />
+    </Key>
+    <Property Name="TelefoneId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="Numero" Type="varchar" Nullable="false" MaxLength="15" />
+    <Property Name="Tipo" Type="int" Nullable="false" />
+  </EntityType>
+  <Association Name="Consulta_MedicoId">
+    <End Role="Funcionario" Type="ClinicaModel.Store.Funcionario" Multiplicity="1" />
+    <End Role="Consulta" Type="ClinicaModel.Store.Consulta" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Funcionario">
+        <PropertyRef Name="FuncionarioId" />
+      </Principal>
+      <Dependent Role="Consulta">
+        <PropertyRef Name="MedicoId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="Consulta_Paciente">
+    <End Role="Paciente" Type="ClinicaModel.Store.Paciente" Multiplicity="1" />
+    <End Role="Consulta" Type="ClinicaModel.Store.Consulta" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Paciente">
+        <PropertyRef Name="PacienteId" />
+      </Principal>
+      <Dependent Role="Consulta">
+        <PropertyRef Name="PacienteId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FuncionarioEspecialidade_EspecialidadeId">
+    <End Role="Especialidade" Type="ClinicaModel.Store.Especialidade" Multiplicity="1" />
+    <End Role="FuncionarioEspecialidade" Type="ClinicaModel.Store.FuncionarioEspecialidade" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Especialidade">
+        <PropertyRef Name="EspecialidadeId" />
+      </Principal>
+      <Dependent Role="FuncionarioEspecialidade">
+        <PropertyRef Name="EspecialidadeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FuncionarioEspecialidade_FuncionarioId">
+    <End Role="Funcionario" Type="ClinicaModel.Store.Funcionario" Multiplicity="1" />
+    <End Role="FuncionarioEspecialidade" Type="ClinicaModel.Store.FuncionarioEspecialidade" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Funcionario">
+        <PropertyRef Name="FuncionarioId" />
+      </Principal>
+      <Dependent Role="FuncionarioEspecialidade">
+        <PropertyRef Name="FuncionarioId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FuncionarioTelefone_Funcionario">
+    <End Role="Funcionario" Type="ClinicaModel.Store.Funcionario" Multiplicity="1" />
+    <End Role="FuncionarioTelefone" Type="ClinicaModel.Store.FuncionarioTelefone" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Funcionario">
+        <PropertyRef Name="FuncionarioId" />
+      </Principal>
+      <Dependent Role="FuncionarioTelefone">
+        <PropertyRef Name="FuncionarioId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FuncionarioTelefone_Telefone">
+    <End Role="Telefone" Type="ClinicaModel.Store.Telefone" Multiplicity="1" />
+    <End Role="FuncionarioTelefone" Type="ClinicaModel.Store.FuncionarioTelefone" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Telefone">
+        <PropertyRef Name="TelefoneId" />
+      </Principal>
+      <Dependent Role="FuncionarioTelefone">
+        <PropertyRef Name="TelefoneId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="PacienteTelefone_Paciente">
+    <End Role="Paciente" Type="ClinicaModel.Store.Paciente" Multiplicity="1" />
+    <End Role="PacienteTelefone" Type="ClinicaModel.Store.PacienteTelefone" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Paciente">
+        <PropertyRef Name="PacienteId" />
+      </Principal>
+      <Dependent Role="PacienteTelefone">
+        <PropertyRef Name="PacienteId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="PacienteTelefone_Telefone">
+    <End Role="Telefone" Type="ClinicaModel.Store.Telefone" Multiplicity="1" />
+    <End Role="PacienteTelefone" Type="ClinicaModel.Store.PacienteTelefone" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Telefone">
+        <PropertyRef Name="TelefoneId" />
+      </Principal>
+      <Dependent Role="PacienteTelefone">
+        <PropertyRef Name="TelefoneId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

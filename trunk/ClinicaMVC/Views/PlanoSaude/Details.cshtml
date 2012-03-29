@@ -1,0 +1,22 @@
+﻿@model ClinicaMVC.Models.PlanoSaude
+
+@{    
+}
+
+<h2>@ViewBag.Title</h2>
+<h3>Visualização de registro</h3>
+
+<fieldset>
+
+    <div class="display-label">
+				@Html.LabelFor(model => model.Descricao)
+		
+	</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Descricao)
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Editar", "Edit", new { id=Model.PlanoSaudeId }) |
+    @Html.ActionLink("Voltar", "Index")
+</p>

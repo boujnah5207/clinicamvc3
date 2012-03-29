@@ -1,0 +1,155 @@
+<#@ template language="C#" HostSpecific="True" #>
+<#
+MvcTextTemplateHost mvcHost = (MvcTextTemplateHost)(Host);
+#>
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+using ClinicaMVC.Models;
+
+
+//<#= mvcHost.ControllerRootName #>
+namespace <#= mvcHost.Namespace #>
+{
+    public class <#= mvcHost.ControllerName #> : Controller
+    {
+	
+	
+		String tituloCadastro = "<#= (!String.IsNullOrEmpty(mvcHost.AreaName)) ? ("/" + mvcHost.AreaName) : String.Empty #>";
+		
+        //
+        // GET: <#= (!String.IsNullOrEmpty(mvcHost.AreaName)) ? ("/" + mvcHost.AreaName) : String.Empty #>/<#= mvcHost.ControllerRootName #>/
+
+        public ActionResult Index()
+        {
+		    ViewBag.Title = tituloCadastro;
+            using (var db = new ClinicaEntities())
+            {                
+                return View(db.<#= mvcHost.ControllerRootName #>.ToList());    
+            }
+        }
+
+<#
+if(mvcHost.AddActionMethods) {
+#>
+        //
+        // GET: <#= (!String.IsNullOrEmpty(mvcHost.AreaName)) ? ("/" + mvcHost.AreaName) : String.Empty #>/<#= mvcHost.ControllerRootName #>/Details/5
+
+        public ActionResult Details(int id)
+        {
+            ViewBag.Title = tituloCadastro;
+            using (var db = new ClinicaEntities())
+            {
+                return View(db.<#= mvcHost.ControllerRootName #>.Find(id));
+            }		
+        }
+
+        //
+        // GET: <#= (!String.IsNullOrEmpty(mvcHost.AreaName)) ? ("/" + mvcHost.AreaName) : String.Empty #>/<#= mvcHost.ControllerRootName #>/Create
+
+        public ActionResult Create()
+        {
+			ViewBag.Title = tituloCadastro;
+            return View();
+        } 
+
+        //
+        // POST: <#= (!String.IsNullOrEmpty(mvcHost.AreaName)) ? ("/" + mvcHost.AreaName) : String.Empty #>/<#= mvcHost.ControllerRootName #>/Create
+
+        [HttpPost]
+        public ActionResult Create(<#= mvcHost.ControllerRootName #> <#= mvcHost.ControllerRootName.ToLower() #>)
+        {
+            ViewBag.Title = tituloCadastro;
+            try
+            {
+                using (var db = new ClinicaEntities())
+                {
+                    db.<#= mvcHost.ControllerRootName #>.Add(<#= mvcHost.ControllerRootName.ToLower() #>);
+                    db.SaveChanges();
+                }
+
+                return RedirectToAction("Index");
+            }
+            catch (Exception e)
+            {
+                ViewBag.Error = e;
+                return View("Error");
+            }
+        }
+        
+        //
+        // GET: <#= (!String.IsNullOrEmpty(mvcHost.AreaName)) ? ("/" + mvcHost.AreaName) : String.Empty #>/<#= mvcHost.ControllerRootName #>/Edit/5
+ 
+        public ActionResult Edit(int id)
+        {
+            ViewBag.Title = tituloCadastro;
+            using (var db = new ClinicaEntities())
+            {
+                return View(db.<#= mvcHost.ControllerRootName #>.Find(id));
+            }
+        }
+
+        //
+        // POST: <#= (!String.IsNullOrEmpty(mvcHost.AreaName)) ? ("/" + mvcHost.AreaName) : String.Empty #>/<#= mvcHost.ControllerRootName #>/Edit/5
+
+        [HttpPost]
+        public ActionResult Edit(int id, <#= mvcHost.ControllerRootName #> <#= mvcHost.ControllerRootName.ToLower() #>)
+        {
+            ViewBag.Title = tituloCadastro;
+            try
+            {
+                using (var db = new ClinicaEntities())
+                {
+                    db.Entry(<#= mvcHost.ControllerRootName.ToLower() #>).State = System.Data.EntityState.Modified;
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+            }
+            catch (Exception e)
+            {
+                ViewBag.Error = e;
+                return View("Error");
+            }
+        }
+
+        //
+        // GET: <#= (!String.IsNullOrEmpty(mvcHost.AreaName)) ? ("/" + mvcHost.AreaName) : String.Empty #>/<#= mvcHost.ControllerRootName #>/Delete/5
+ 
+        public ActionResult Delete(int id)
+        {
+            ViewBag.Title = tituloCadastro;
+            using (var db = new ClinicaEntities())
+            {
+                return View(db.<#= mvcHost.ControllerRootName #>.Find(id));
+            }
+        }
+
+        //
+        // POST: <#= (!String.IsNullOrEmpty(mvcHost.AreaName)) ? ("/" + mvcHost.AreaName) : String.Empty #>/<#= mvcHost.ControllerRootName #>/Delete/5
+
+        [HttpPost]
+        public ActionResult Delete(int id, <#= mvcHost.ControllerRootName #> <#= mvcHost.ControllerRootName.ToLower() #>)
+        {
+            ViewBag.Title = tituloCadastro;
+            try
+            {
+                using (var db = new ClinicaEntities())
+                {
+                    db.Entry(<#= mvcHost.ControllerRootName.ToLower() #>).State = System.Data.EntityState.Deleted;
+                    db.SaveChanges();
+                }
+                return RedirectToAction("Index");
+            }
+            catch (Exception e)
+            {
+                ViewBag.Error = e;
+                return View("Error");
+            }
+        }
+<#
+}
+#>
+    }
+}
