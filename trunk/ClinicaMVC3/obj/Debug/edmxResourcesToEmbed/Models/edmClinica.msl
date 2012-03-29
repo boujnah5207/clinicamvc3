@@ -1,0 +1,91 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="ClinicaModelStoreContainer" CdmEntityContainer="ClinicaEntities">
+    <EntitySetMapping Name="Consulta">
+      <EntityTypeMapping TypeName="ClinicaModel.Consulta">
+        <MappingFragment StoreEntitySet="Consulta">
+          <ScalarProperty Name="ConsultaId" ColumnName="ConsultaId" />
+          <ScalarProperty Name="PacienteId" ColumnName="PacienteId" />
+          <ScalarProperty Name="MedicoId" ColumnName="MedicoId" />
+          <ScalarProperty Name="Data" ColumnName="Data" />
+          <ScalarProperty Name="Hora" ColumnName="Hora" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Especialidade">
+      <EntityTypeMapping TypeName="ClinicaModel.Especialidade">
+        <MappingFragment StoreEntitySet="Especialidade">
+          <ScalarProperty Name="EspecialidadeId" ColumnName="EspecialidadeId" />
+          <ScalarProperty Name="Descricao" ColumnName="Descricao" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Funcionario">
+      <EntityTypeMapping TypeName="ClinicaModel.Funcionario">
+        <MappingFragment StoreEntitySet="Funcionario">
+          <ScalarProperty Name="FuncionarioId" ColumnName="FuncionarioId" />
+          <ScalarProperty Name="Nome" ColumnName="Nome" />
+          <ScalarProperty Name="RG" ColumnName="RG" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="endereco" ColumnName="endereco" />
+          <ScalarProperty Name="funcao" ColumnName="funcao" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="FuncionarioEspecialidade">
+      <EntityTypeMapping TypeName="ClinicaModel.FuncionarioEspecialidade">
+        <MappingFragment StoreEntitySet="FuncionarioEspecialidade">
+          <ScalarProperty Name="FuncionarioEspecialidadeId" ColumnName="FuncionarioEspecialidadeId" />
+          <ScalarProperty Name="FuncionarioId" ColumnName="FuncionarioId" />
+          <ScalarProperty Name="EspecialidadeId" ColumnName="EspecialidadeId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="FuncionarioTelefone">
+      <EntityTypeMapping TypeName="ClinicaModel.FuncionarioTelefone">
+        <MappingFragment StoreEntitySet="FuncionarioTelefone">
+          <ScalarProperty Name="FuncionarioTelefoneId" ColumnName="FuncionarioTelefoneId" />
+          <ScalarProperty Name="FuncionarioId" ColumnName="FuncionarioId" />
+          <ScalarProperty Name="TelefoneId" ColumnName="TelefoneId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Paciente">
+      <EntityTypeMapping TypeName="ClinicaModel.Paciente">
+        <MappingFragment StoreEntitySet="Paciente">
+          <ScalarProperty Name="PacienteId" ColumnName="PacienteId" />
+          <ScalarProperty Name="Nome" ColumnName="Nome" />
+          <ScalarProperty Name="Endereco" ColumnName="Endereco" />
+          <ScalarProperty Name="ObservacaoMedico" ColumnName="ObservacaoMedico" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="PacienteTelefone">
+      <EntityTypeMapping TypeName="ClinicaModel.PacienteTelefone">
+        <MappingFragment StoreEntitySet="PacienteTelefone">
+          <ScalarProperty Name="PacienteTelefoneId" ColumnName="PacienteTelefoneId" />
+          <ScalarProperty Name="PacienteId" ColumnName="PacienteId" />
+          <ScalarProperty Name="TelefoneId" ColumnName="TelefoneId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Telefone">
+      <EntityTypeMapping TypeName="ClinicaModel.Telefone">
+        <MappingFragment StoreEntitySet="Telefone">
+          <ScalarProperty Name="TelefoneId" ColumnName="TelefoneId" />
+          <ScalarProperty Name="Numero" ColumnName="Numero" />
+          <ScalarProperty Name="Tipo" ColumnName="Tipo" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="PlanoSaude">
+      <EntityTypeMapping TypeName="ClinicaModel.PlanoSaude">
+        <MappingFragment StoreEntitySet="PlanoSaude">
+          <ScalarProperty Name="Descricao" ColumnName="Descricao" />
+          <ScalarProperty Name="PlanoSaudeId" ColumnName="PlanoSaudeId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

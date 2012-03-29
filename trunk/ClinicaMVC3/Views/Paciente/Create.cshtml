@@ -1,0 +1,230 @@
+﻿
+@model ClinicaMVC3.Models.Paciente
+
+@{  
+}
+<input  id="inputMethod" type=hidden value="@ViewBag.Method"/>
+<h2>@ViewBag.Title</h2>
+<h3>Inserir Novo</h3>
+
+
+<script src="../../Scripts/jquery-1.7.1.js" type="text/javascript"></script>
+<script src="../../Scripts/jquery-ui-1.8.18.js" type="text/javascript"></script>
+<script src="../../Scripts/json2.js" type="text/javascript"></script>
+<script src="../../Scripts/DataTables-1.9.0/media/js/jquery.dataTables.js" type="text/javascript"></script>
+<script src="../../Scripts/DataTables-1.9.0/extras/TableTools/media/js/TableTools.js" type="text/javascript"></script>
+<script src="../../Scripts/DataTables-1.9.0/extras/TableTools/media/js/ZeroClipboard.js" type="text/javascript"></script>
+<link href="../../Content/DataTables-1.9.0/extras/TableTools/media/css/TableTools.css"
+    rel="stylesheet" type="text/css" />
+<link href="../../Content/DataTables-1.9.0/extras/TableTools/media/css/TableTools_JUI.css"
+    rel="stylesheet" type="text/css" />
+<link href="../../Content/themes/base/jquery.ui.all.css" rel="stylesheet" type="text/css" />
+<script src="../../Scripts/jquery.validate.js" type="text/javascript"></script>
+
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+<script src="../../Scripts/MicrosoftMvcAjax.js" type="text/javascript"></script>
+<script src="../../Scripts/MicrosoftMvcValidation.js" type="text/javascript"></script>
+
+
+
+<script type="text/javascript">
+
+    //Esta função será usada para montar um JSON e mandar para o "PacienteController"
+    function Save() {
+        var isValid = false;
+
+        isValid = ($('form').validate().element($('#Nome')));
+        isValid = ($('form').validate().element($('#Endereco'))) ? isValid : false;
+        isValid = ($('form').validate().element($('#ObservacaoMedico'))) ? isValid : false;
+
+        if (isValid) {
+
+
+            // 1º: Lê os dados da grade e criar um JSON
+
+            // Criando um Telefone JSON Object
+            var Telefone = {
+                "TelefoneId": "",
+                "Numero": "",
+                "Tipo": "",
+                "FuncionarioTelefone": [],
+                "PacienteTelefone": []
+            };
+
+            var PacienteTelefone = {
+                "PacienteTelefoneId": "",
+                "PacienteId": "",
+                "TelefoneId": "",
+                "Paciente": null,
+                "Telefone": ""
+            }
+            // Criando um Paciente Json Object
+            var Paciente = {
+                "PacienteId": "",
+                "Nome": "",
+                "Endereco": "",
+                "ObservacaoMedico": "",
+                "Consulta": [],
+                "PacienteTelefone": []
+            };
+
+            var auxPacienteId = 0;
+            // Set Sales Main Value
+            if ($('#inputMethod').val() == "Edit") {
+                auxPacienteId = $("#PacienteId").val();
+            } else {
+                auxPacienteId = 0;
+            }
+
+            Paciente.PacienteId = auxPacienteId;
+            Paciente.Nome = $("#Nome").val();
+            Paciente.Endereco = $("#Endereco").val();
+            Paciente.ObservacaoMedico = $("#ObservacaoMedico").val();
+
+            // Getting Table Data from where we will fetch Sales Sub Record
+            var oTable = $('.tbl').dataTable().fnGetData();
+
+            for (var i = 0; i < oTable.length; i++) {
+
+                // IF This view is for edit then it will read SalesId from Hidden field
+                if ($('#inputMethod').val() == "Edit") {
+                    Telefone.TelefoneId = oTable[i][2];
+                }
+                else {
+                    Telefone.TelefoneId = 0;
+                }
+
+                Telefone.Numero = oTable[i][0];
+                Telefone.Tipo = oTable[i][2];
+
+                if ($('#inputMethod').val() == "Edit") {
+                    PacienteTelefone.PacienteTelefoneId = oTable[i][3];
+                }
+                else {
+                    PacienteTelefone.PacienteTelefoneId = 0;
+                }
+
+                PacienteTelefone.TelefoneId = Telefone.TelefoneId;
+                PacienteTelefone.PacienteId = auxPacienteId;
+
+                PacienteTelefone.Telefone = Telefone;
+                Paciente.PacienteTelefone.push(PacienteTelefone);
+                Telefone = {
+                    "TelefoneId": "",
+                    "Numero": "",
+                    "Tipo": "",
+                    "FuncionarioTelefone": [],
+                    "PacienteTelefone": []
+                };
+
+                PacienteTelefone = {
+                    "PacienteTelefoneId": "",
+                    "PacienteId": "",
+                    "TelefoneId": "",
+                    "Paciente": null,
+                    "Telefone": ""
+                }
+
+            }
+
+
+            $.ajax({
+                url: '/Paciente/Create',
+                data: JSON.stringify(Paciente),
+                type: 'POST',
+                contentType: 'application/json;',
+                dataType: 'json',
+                success: function (result) {
+
+                    if (result.Success == "1") {
+                        window.location.href = "/Paciente/index";
+                    }
+                    else {
+                        alert(result.ex);
+                    }
+                }
+            });
+
+        }
+
+
+    }
+
+
+</script>
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+    <fieldset>        
+        @Html.HiddenFor(model => model.PacienteId)
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Nome)
+        </div>
+        <div class="editor-field">
+            @if (ViewBag.Method == "Detail")
+            {
+                @Html.DisplayFor(model => model.Nome)    
+            }else{
+                @Html.EditorFor(model => model.Nome)
+                @Html.ValidationMessageFor(model => model.Nome)
+            }
+            
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Endereco)
+        </div>
+        <div class="editor-field">
+            @if (ViewBag.Method == "Detail")
+            {
+                @Html.DisplayFor(model => model.Endereco)    
+            }
+            else
+            {
+                @Html.EditorFor(model => model.Endereco)
+                @Html.ValidationMessageFor(model => model.Endereco)
+            }
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.ObservacaoMedico)
+        </div>
+        <div class="editor-field">
+            @if (ViewBag.Method == "Detail")
+            {
+                @Html.DisplayFor(model => model.ObservacaoMedico)    
+            }
+            else
+            {
+                @Html.EditorFor(model => model.ObservacaoMedico)
+                @Html.ValidationMessageFor(model => model.ObservacaoMedico)
+            }
+        </div>
+    </fieldset>
+    
+    ViewBag.ModelClass = "Paciente";
+    ViewBag.Model = Model;
+    Html.RenderPartial("TelefoneTable", @ViewData);
+
+
+    
+    
+<div>    
+    
+    @if (ViewBag.Method == "Detail")
+    {
+        @Html.ActionLink("Editar", "Edit", new { id = Model.PacienteId });
+    }
+    else
+    {
+     <input type="button" value="Salvar" onclick="Save()" />
+    }
+    | 
+    @Html.ActionLink("Voltar", "Index")
+</div>
+}
+
+
+
