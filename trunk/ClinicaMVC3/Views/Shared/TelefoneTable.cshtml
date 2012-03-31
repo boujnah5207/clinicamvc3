@@ -1,11 +1,133 @@
-﻿
+﻿<script type="text/javascript">
+    function JSONFuncionarioTelefone(objeto, EhFuncionario) {
+        // Criando um Telefone JSON Object
 
-<script type="text/javascript">
+        var auxId = 0;
+        if ($('#inputMethod').val() == "Edit") {
+            if (EhFuncionario) {
+                auxId = $("#FuncionarioId").val();
+            } else {
+                auxId = $("#PacienteId").val();
+            }
+        } else {
+            auxId = 0;
+        }
+
+        var Telefone = {
+            "TelefoneId": "",
+            "Numero": "",
+            "Tipo": "",
+            "FuncionarioTelefone": [],
+            "PacienteTelefone": []
+        };
+
+        if (EhFuncionario) {
+            var FuncionarioTelefone = {
+                "FuncionarioTelefoneId": "",
+                "FuncionarioId": "",
+                "TelefoneId": "",
+                "Funcionario": null,
+                "Telefone": ""
+            }
+        }
+        else {
+            var PacienteTelefone = {
+                "PacienteTelefoneId": "",
+                "PacienteId": "",
+                "TelefoneId": "",
+                "Paciente": null,
+                "Telefone": ""
+            }
+        }
+
+        // Efetuando leitura da jDataTable dos Detail Telefone.
+        var oTblTelefone = $('.tblTelefone').dataTable().fnGetData();
+        for (var i = 0; i < oTblTelefone.length; i++) {
+
+            Telefone.TelefoneId = oTblTelefone[i][3];
+            Telefone.Numero = oTblTelefone[i][0];
+            Telefone.Tipo = oTblTelefone[i][2];
+            if (EhFuncionario) {
+
+                FuncionarioTelefone.FuncionarioTelefoneId = oTblTelefone[i][4];
+                FuncionarioTelefone.TelefoneId = Telefone.TelefoneId;
+                FuncionarioTelefone.FuncionarioId = auxId;
+
+                if (FuncionarioTelefone.TelefoneId == 0) {
+                    FuncionarioTelefone.Telefone = Telefone;
+                }
+
+                objeto.FuncionarioTelefone.push(FuncionarioTelefone);
+            } else {
+
+                PacienteTelefone.PacienteTelefoneId = oTblTelefone[i][4];
+                PacienteTelefone.TelefoneId = Telefone.TelefoneId;
+                PacienteTelefone.PacienteId = auxId;
+
+                if (PacienteTelefone.TelefoneId == 0) {
+                    PacienteTelefone.Telefone = Telefone;
+                }
+
+                objeto.PacienteTelefone.push(PacienteTelefone);
+
+
+            }
+
+            Telefone = {
+                "TelefoneId": "",
+                "Numero": "",
+                "Tipo": "",
+                "FuncionarioTelefone": [],
+                "PacienteTelefone": []
+            };
+
+            if (EhFuncionario) {
+                var FuncionarioTelefone = {
+                    "FuncionarioTelefoneId": "",
+                    "FuncionarioId": "",
+                    "TelefoneId": "",
+                    "Funcionario": null,
+                    "Telefone": ""
+                }
+            }
+            else {
+                var PacienteTelefone = {
+                    "PacienteTelefoneId": "",
+                    "PacienteId": "",
+                    "TelefoneId": "",
+                    "Paciente": null,
+                    "Telefone": ""
+                }
+            }
+
+        }
+
+        return objeto;
+
+
+    }
+
 
     $(document).ready(
         function () {
+            /* Se o número não foi digitado, desabilita o campo tipo. */
+            if (($("#Numero").val() == '') || ($("#Numero").val == null)) {
+                $("#Tipo").attr("disabled", true);
+            }
+            else {
+                $("#Tipo").removeAttr("disabled");
+            }
+            $("#Numero").keypress(function () {
+                if (($("#Numero").val() == '') || ($("#Numero").val == null)) {
+                    $("#Tipo").attr("disabled", true);
+                }
+                else {
+                    $("#Tipo").removeAttr("disabled");
+                }
+            });
 
-
+            
+           
             /* <th>Número</th>             =0*/
             /* <th>Tipo</th>               =1*/
             /* <th>Tipo-Hidden</th>        =2*/
@@ -14,8 +136,9 @@
 
 
             // here i have used datatables.js (jQuery Data Table)
-            $('.tbl').dataTable(
+            $('.tblTelefone').dataTable(
                 {
+                
                     "aoColumnDefs":
                     [
                             { "bVisible": false, "aTargets": [2] },
@@ -49,43 +172,49 @@
 
 
     // Esta função serve para adicionar á um item na tabela
-    function Add() {
+    function TelefoneAdd() {
         var isValid = false;
 
-        isValid = $('form').validate().element($('#Numero'));
-        isValid = ($('form').validate().element($('#Tipo'))) ? isValid : false;
-
-
-        if (isValid) {
-            $('.tbl').dataTable().fnAddData([$('#Numero').val(),                /* <th>Número</th>            */
+        /* Verifico se foi preenchido o "edit". */
+        if (($('#Numero').val() != '') && ($('#Numero').val() != null)) {
+            isValid = $('form').validate().element($('#Numero'));
+            if (isValid) {
+                $('.tblTelefone').dataTable().fnAddData([$('#Numero').val(),    /* <th>Número</th>*/
                                              $('#Tipo option:selected').text(), /* <th>Tipo</th>              */
                                              $('#Tipo option:selected').val(),  /* <th>Tipo-Hidden</th>       */
                                              0,                                 /* <th>TelefoneId</th>        */
                                              0]);                               /* <th>PacienteTelefoneId/FuncionarioTelefoneId</th>*/
 
-            //Esvaziando os componentes.
-            $('#Numero').val("");
+            }
+        } else if ((($('#Numero').val() == null) || ($('#Numero').val() == '')) && ($('#TelefoneId option:selected').val() != null) && $('#TelefoneId option:selected').val() != '') {
+            $('.tblTelefone').dataTable().fnAddData([$('#TelefoneId option:selected').text(),  /* <th>Número</th>*/
+                                                     $('#Tipo option:selected').text(),       /* <th>Tipo</th>              */
+                                                     $('#Tipo option:selected').val(),        /* <th>Tipo-Hidden</th>       */
+                                                     $('#TelefoneId option:selected').val(),  /* <th>TelefoneId</th>        */
+                                                     0]);                               /* <th>PacienteTelefoneId/FuncionarioTelefoneId</th>*/
+        } else {
 
+            var validator = $("form").validate();
+            validator.showErrors({ "Numero": "É obrigatório preenchimento do número." });
         }
 
+        $('#Numero').val("");
 
     }
 
-    function DeleteRow() {
+    function TelefoneDeleteRow() {
 
-        var oTT = TableTools.fnGetInstance('tbl'); // Get Table instance
+        var oTT = TableTools.fnGetInstance('tblTelefone'); // Get Table instance
         if ((oTT != undefined) && (oTT != null)) {
             var sRow = oTT.fnGetSelected(); // Get Selected Item From Table
             if ((sRow != '') && (sRow != undefined) && (sRow != null)) {
-                $('.tbl').dataTable().fnDeleteRow(sRow[0]);
+                $('.tblTelefone').dataTable().fnDeleteRow(sRow[0]);
             }
         }
 
     }
 
 </script>
-
-
 <fieldset>
     <legend>Telefones</legend>
     <div class="editor-label">
@@ -98,6 +227,7 @@
         }
         else
         {
+            @Html.DropDownListFor(model => new ClinicaMVC3.Models.Telefone().TelefoneId, (List<SelectListItem>)ViewBag.Telefones) 
             @Html.EditorFor(model => new ClinicaMVC3.Models.Telefone().Numero)
             @Html.ValidationMessageFor(model => new ClinicaMVC3.Models.Telefone().Numero)
         }
@@ -105,7 +235,7 @@
     <div class="editor-label">
         @Html.LabelFor(model => new ClinicaMVC3.Models.Telefone().Tipo)
     </div>
-    <div class="editor-field">                        
+    <div class="editor-field">
         @if (ViewBag.Method == "Detail")
         {
             @Html.DisplayFor(model => new ClinicaMVC3.Models.Telefone().Tipo)
@@ -116,87 +246,88 @@
             @Html.ValidationMessageFor(model => new ClinicaMVC3.Models.Telefone().Tipo)
         }
     </div>
-            
-    
     <input type="button" @if (ViewBag.Method == "Detail")
-                         {@Html.Encode("disabled")} value= "Add" onclick="Add()"  />   
-
-
+                         {@Html.Encode("disabled")} value= "Add" onclick="TelefoneAdd()"  />
     <br />
-
-   <table style="width: 100%;"  class="tbl" id="tbl">
-   <thead>
-   <tr>
-        <th>Número</th> 
-        <th>Tipo</th> 
-        <th>Tipo-Hidden</th>
-        <th>TelefoneId</th>
-        <th>PacienteTelefoneId/FuncionarioTelefoneId</th>
-   </tr>
-   </thead>
-   <tbody>
-   @if (ViewData.Model != null)
-   {
-       if (ViewBag.ModelClass == "Paciente")
-       {
-           foreach (var item in ViewData.Model.PacienteTelefone)
-           { 
+    <table style="width: 100%;" class="tblTelefone" id="tblTelefone">
+        <thead>
             <tr>
-                <td>
-                    @item.Telefone.Numero
-                </td>           
-                <td>
-                    @System.Web.Mvc.Html.MvcHtmlExtensions.TelefoneDisplayFor(item.Telefone.Tipo.ToString())
-                </td>           
-                <td>
-                    @item.Telefone.Tipo
-                </td>           
-                <td>
-                @item.Telefone.TelefoneId
-                </td>           
-                <td>
-                   @item.PacienteTelefoneId
-               </td>
+                <th>
+                    Número
+                </th>
+                <th>
+                    Tipo
+                </th>
+                <th>
+                    Tipo-Hidden
+                </th>
+                <th>
+                    TelefoneId
+                </th>
+                <th>
+                    PacienteTelefoneId/FuncionarioTelefoneId
+                </th>
             </tr>
-           }
-       }
-       else
-       {
-           foreach (var item in ViewData.Model.FuncionarioTelefone)
-           { 
-            <tr>
-                <td>
-                    @item.Telefone.Numero
-                </td>           
-                <td>
-                    @System.Web.Mvc.Html.MvcHtmlExtensions.TelefoneDisplayFor(item.Telefone.Tipo.ToString())
-                </td>           
-                <td>
-                    @item.Telefone.Tipo
-                </td>           
-                <td>
-                @item.Telefone.TelefoneId
-                </td>           
-                <td>
-                   @item.FuncionarioTelefoneId
-               </td>
-            </tr>
-           }
-       }
-   }
-   </tbody>
-   
-   </table>
-   <br />
-
-   
-
-   <input type="button" 
+        </thead>
+        <tbody>
+            @if (ViewData.Model != null)
+            {
+                if (ViewBag.ModelClass == "Paciente")
+                {
+                    foreach (var item in ViewData.Model.PacienteTelefone)
+                    { 
+                <tr>
+                    <td>
+                        @item.Telefone.Numero
+                    </td>
+                    <td>
+                        @System.Web.Mvc.Html.MvcHtmlExtensions.TelefoneDisplayFor(item.Telefone.Tipo.ToString())
+                    </td>
+                    <td>
+                        @item.Telefone.Tipo
+                    </td>
+                    <td>
+                        @item.Telefone.TelefoneId
+                    </td>
+                    <td>
+                        @item.PacienteTelefoneId
+                    </td>
+                </tr>
+                    }
+                }
+                else
+                {
+                    foreach (var item in ViewData.Model.FuncionarioTelefone)
+                    { 
+                <tr>
+                    <td>
+                        @item.Telefone.Numero
+                    </td>
+                    <td>
+                        @System.Web.Mvc.Html.MvcHtmlExtensions.TelefoneDisplayFor(item.Telefone.Tipo.ToString())
+                    </td>
+                    <td>
+                        @item.Telefone.Tipo
+                    </td>
+                    <td>
+                        @item.Telefone.TelefoneId
+                    </td>
+                    <td>
+                        @item.FuncionarioTelefoneId
+                    </td>
+                </tr>
+                    }
+                }
+            }
+        </tbody>
+    </table>
+    <br />
+    <input type="button" 
    
    @if (ViewBag.Method == "Detail")
    {
        @Html.Encode("disabled")
    }
    
-   value="Excluir linha" onclick="DeleteRow()" />
-</fieldset>   
+   value="Excluir linha" onclick="TelefoneDeleteRow()" />
+</fieldset>

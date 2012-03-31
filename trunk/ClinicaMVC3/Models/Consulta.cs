@@ -30,7 +30,11 @@ namespace ClinicaMVC3.Models
         public System.TimeSpan Hora { get; set; }
     	[Required(ErrorMessage="Este campo deve ser preenchido.")]
         public int Status { get; set; }
+
         #endregion
+    
+    
+    
     
         public virtual Funcionario Funcionario { get; set; }
         public virtual Paciente Paciente { get; set; }

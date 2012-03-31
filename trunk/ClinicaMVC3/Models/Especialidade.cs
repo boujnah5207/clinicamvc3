@@ -26,7 +26,7 @@ namespace ClinicaMVC3.Models
     	[Required(ErrorMessage="Este campo deve ser preenchido.")]
         public int EspecialidadeId { get; set; }
     	[Required(ErrorMessage="Este campo deve ser preenchido.")]
-        [MaxLength(100)]
+        [StringLength(100)]
         public string Descricao { get; set; }
 
         #endregion

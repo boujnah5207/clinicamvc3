@@ -21,9 +21,7 @@ namespace ClinicaMVC3.Models
     	[Required(ErrorMessage="Este campo deve ser preenchido.")]
         public int PlanoSaudeId { get; set; }
     	[Required(ErrorMessage="Este campo deve ser preenchido.")]
-        [MaxLength(100)]
-
-        [Display(Name = "Descrição")]
+        [StringLength(100)]
         public string Descricao { get; set; }
 
         #endregion

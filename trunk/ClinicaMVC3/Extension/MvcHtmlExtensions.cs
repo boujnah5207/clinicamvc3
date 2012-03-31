@@ -11,19 +11,20 @@ namespace System.Web.Mvc.Html
 {
     public static class MvcHtmlExtensions
     {
+        #region Telefone 
         private static List<SelectListItem> TelefoneList()
         {
-            SelectListItem li = new SelectListItem();
-            li.Value = "1";
-            li.Text = "Celular";
 
-            SelectListItem li1 = new SelectListItem();
-            li1.Value = "2";
-            li1.Text = "Telefone";
+            Array enums = Enum.GetValues(typeof(ClinicaMVC3.Models.Telefone.tipoTelefone));
 
             List<SelectListItem> list = new List<SelectListItem>();
-            list.Add(li);
-            list.Add(li1);
+            for (int i = 0; i < enums.Length; i++)
+			{
+                SelectListItem li = new SelectListItem();
+                li.Value = (i + 1).ToString();
+                li.Text = enums.GetValue(i).ToString();
+                list.Add(li);
+			}
 
             return list;
         }
@@ -61,10 +62,81 @@ namespace System.Web.Mvc.Html
                 return htmlHelper.DropDownListFor(
                     expression,
                     list.AsEnumerable(),
-                    new { @disabled=true }
+                    new { @disabled = true }
                 );
             }
         }
+
+        #endregion
+
+        #region Função
+        private static List<SelectListItem> FuncaoList()
+        {
+            SelectListItem li = new SelectListItem();
+            li.Value = "1";
+            li.Text = "Administrador";
+
+            SelectListItem li1 = new SelectListItem();
+            li1.Value = "2";
+            li1.Text = "Secretária";
+
+
+            SelectListItem li2 = new SelectListItem();
+            li2.Value = "3";
+            li2.Text = "Médico";
+
+            List<SelectListItem> list = new List<SelectListItem>();
+            list.Add(li);
+            list.Add(li1);
+            list.Add(li2);
+
+            return list;
+        }
+
+        public static MvcHtmlString FuncaoDisplayFor(String codTipo)
+        {
+
+            String auxText = "";
+            foreach (SelectListItem item in FuncaoList())
+            {
+                if (Int32.Parse(item.Value) == Int32.Parse(codTipo))
+                {
+                    auxText = item.Text;
+                    break;
+                }
+            }
+
+            return new MvcHtmlString(auxText);
+        }
+
+        public static MvcHtmlString FuncaoDropdown<TModel, TEnum>(this HtmlHelper<TModel> htmlHelper, Expression<Func<TModel, TEnum>> expression)
+        {
+
+            List<SelectListItem> list = FuncaoList();
+
+            return htmlHelper.DropDownListFor(
+                expression,
+                list.AsEnumerable()
+            );
+
+        }
+
+
+        public static MvcHtmlString FuncaoDropdown<TModel, TEnum>(this HtmlHelper<TModel> htmlHelper, Expression<Func<TModel, TEnum>> expression, object htmlAttributes)
+        {
+
+            List<SelectListItem> list = FuncaoList();
+
+            return htmlHelper.DropDownListFor(
+                expression,
+                list.AsEnumerable(),
+                htmlAttributes
+            );
+
+        }
+
+        #endregion
+
 
         public static MvcHtmlString EnumDropDownListFor<TModel, TEnum>(this HtmlHelper<TModel> htmlHelper, Expression<Func<TModel, TEnum>> expression)
         {
