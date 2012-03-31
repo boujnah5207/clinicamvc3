@@ -1,137 +1,89 @@
 ﻿@model ClinicaMVC3.Models.Funcionario
-
 @{
 }
 <input  id="inputMethod" type=hidden value="@ViewBag.Method"/>
 <h2>@ViewBag.Title</h2>
-<h3>Inserir Novo</h3>
-<script src="../../Scripts/jquery-1.7.1.js" type="text/javascript"></script>
+<h3>
+    Inserir Novo</h3>
 <script src="../../Scripts/jquery-ui-1.8.18.js" type="text/javascript"></script>
 <script src="../../Scripts/json2.js" type="text/javascript"></script>
 <script src="../../Scripts/DataTables-1.9.0/media/js/jquery.dataTables.js" type="text/javascript"></script>
-<script src="../../Scripts/DataTables-1.9.0/extras/TableTools/media/js/TableTools.js" type="text/javascript"></script>
-<script src="../../Scripts/DataTables-1.9.0/extras/TableTools/media/js/ZeroClipboard.js" type="text/javascript"></script>
+<script src="../../Scripts/DataTables-1.9.0/extras/TableTools/media/js/TableTools.js"
+    type="text/javascript"></script>
+<script src="../../Scripts/DataTables-1.9.0/extras/TableTools/media/js/ZeroClipboard.js"
+    type="text/javascript"></script>
 <link href="../../Content/DataTables-1.9.0/extras/TableTools/media/css/TableTools.css"
     rel="stylesheet" type="text/css" />
 <link href="../../Content/DataTables-1.9.0/extras/TableTools/media/css/TableTools_JUI.css"
     rel="stylesheet" type="text/css" />
 <link href="../../Content/themes/base/jquery.ui.all.css" rel="stylesheet" type="text/css" />
-<script src="../../Scripts/jquery.validate.js" type="text/javascript"></script>
-
-<script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
-<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
-<script src="../../Scripts/MicrosoftMvcAjax.js" type="text/javascript"></script>
-<script src="../../Scripts/MicrosoftMvcValidation.js" type="text/javascript"></script>
-
 <script type="text/javascript">
+
+    $(document).ready
+	(
+        function () {
+            DisableFields(($("#funcao").val() != 3));
+            $("#funcao").blur(function () {
+                DisableFields(($("#funcao").val() != 3));
+            });
+        }
+    );
+
 
     //Esta função será usada para montar um JSON e mandar para o "FuncionarioController"
     function Save() {
         var isValid = false;
-        
+
         isValid = ($('form').validate().element($('#Nome')));
         isValid = ($('form').validate().element($('#RG'))) ? isValid : false;
         isValid = ($('form').validate().element($('#endereco'))) ? isValid : false;
         isValid = ($('form').validate().element($('#funcao'))) ? isValid : false;
+        if ($('#inputMethod').val() != "Edit") 
+        {
+            isValid = ($('form').validate().element($('#UserName'))) ? isValid : false;
+            isValid = ($('form').validate().element($('#Password'))) ? isValid : false;
+            isValid = ($('form').validate().element($('#Email'))) ? isValid : false;
+            isValid = ($('form').validate().element($('#ConfirmPassword'))) ? isValid : false;
+        }
 
         if (isValid) {
 
-            // 1º: Lê os dados da grade e criar um JSON
-
-            // Criando um Telefone JSON Object
-            var Telefone = {
-                "TelefoneId": "",
-                "Numero": "",
-                "Tipo": "",
-                "FuncionarioTelefone": [],
-                "PacienteTelefone": []
-            };
-
-            var FuncionarioTelefone = {
-                "FuncionarioTelefoneId" : "",
-                "FuncionarioId"         : "",
-                "TelefoneId"            : "",
-                "Funcionario"           : null,
-                "Telefone"              : ""
-            }
             // Criando um Funcionario Json Object
             var Funcionario = {
-                "FuncionarioId"            : "",
-                "Nome"                     : "",
-                "RG"                       : "",
-                "UserId"                   : "",
-                "endereco"                 : "",
-                "funcao"                   : "",
-                "Consulta"                 : [],
-                "FuncionarioEspecialidade" : [],
-                "FuncionarioTelefone"      : [],
-                "UserName"                 : "",
-                "Password"                 : "",
-                "Email"                    : ""
+                "FuncionarioId": "",
+                "Nome": "",
+                "RG": "",
+                "UserId": "",
+                "endereco": "",
+                "funcao": "",
+                "Consulta": [],
+                "FuncionarioEspecialidade": [],
+                "FuncionarioTelefone": [],
+                "UserName": "",
+                "Password": "",
+                "Email": ""
             };
 
             var auxFuncionarioId = 0;
-            // Set Sales Main Value
             if ($('#inputMethod').val() == "Edit") {
                 auxFuncionarioId = $("#FuncionarioId").val();
             } else {
                 auxFuncionarioId = 0;
             }
-
-            Funcionario.FuncionarioId = auxFuncionarioId;            
-            Funcionario.Nome     = $("#Nome").val();
-            Funcionario.RG       = $("#RG").val();
+            Funcionario.FuncionarioId = auxFuncionarioId;
+            Funcionario.Nome = $("#Nome").val();
+            Funcionario.RG = $("#RG").val();
             Funcionario.endereco = $("#endereco").val();
-            Funcionario.funcao   = $("#funcao").val();
+            Funcionario.funcao = $("#funcao").val();
+            Funcionario.UserId = $("#UserId").val();
             Funcionario.UserName = $("#UserName").val();
             Funcionario.Password = $("#Password").val();
-            Funcionario.Email    = $("#Email").val();
+            Funcionario.Email = $("#Email").val();
 
-            // Getting Table Data from where we will fetch Sales Sub Record
-            var oTable = $('.tbl').dataTable().fnGetData();
+            Funcionario = JSONFuncionarioTelefone(Funcionario, true);
 
-            for (var i = 0; i < oTable.length; i++) {
+            Funcionario = JSONFuncionarioEspecialidade(Funcionario);
 
-                // IF This view is for edit then it will read SalesId from Hidden field
-                if ($('#inputMethod').val() == "Edit") {
-                    Telefone.TelefoneId = oTable[i][2];
-                }
-                else {
-                    Telefone.TelefoneId = 0;
-                }
-
-                Telefone.Numero = oTable[i][0];
-                Telefone.Tipo = oTable[i][2];
-
-                if ($('#inputMethod').val() == "Edit") {
-                    FuncionarioTelefone.FuncionarioTelefoneId = oTable[i][3];
-                }
-                else {
-                    FuncionarioTelefone.FuncionarioTelefoneId = 0;
-                }
-
-                FuncionarioTelefone.TelefoneId = Telefone.TelefoneId;
-                FuncionarioTelefone.FuncionarioId = auxFuncionarioId;
-
-                FuncionarioTelefone.Telefone = Telefone;
-                Funcionario.FuncionarioTelefone.push(FuncionarioTelefone);
-                Telefone = {
-                    "TelefoneId": "",
-                    "Numero": "",
-                    "Tipo": "",
-                    "FuncionarioTelefone": [],
-                    "PacienteTelefone": []
-                };
-
-                FuncionarioTelefone = {
-                    "FuncionarioTelefoneId": "",
-                    "FuncionarioId": "",
-                    "TelefoneId": "",
-                    "Funcionario": null,
-                    "Telefone": ""
-                }
-
-            }
             try {
                 $.ajax({
                     url: '/Funcionario/Create',
@@ -153,20 +105,18 @@
                 alert(e.Message);
             }
 
-
         }
-
 
     }
 
-
 </script>
-
-@using (Html.BeginForm()) 
+@using (Html.BeginForm())
 {
+    Html.EnableClientValidation(true);
     @Html.ValidationSummary(true)
-    <fieldset>        
+    <fieldset>
         @Html.HiddenFor(model => model.FuncionarioId)
+        @Html.HiddenFor(model => model.UserId)
         <div class="editor-label">
             @Html.LabelFor(model => model.Nome)
         </div>
@@ -181,11 +131,9 @@
                 @Html.ValidationMessageFor(model => model.Nome)
             }
         </div>
-
         <div class="editor-label">
             @Html.LabelFor(model => model.RG)
         </div>
-        
         <div class="editor-field">
             @if (ViewBag.Method == "Detail")
             {
@@ -196,9 +144,7 @@
                 @Html.EditorFor(model => model.RG)
                 @Html.ValidationMessageFor(model => model.RG)
             }
-            
         </div>
-
         <div class="editor-label">
             @Html.LabelFor(model => model.endereco)
         </div>
@@ -212,44 +158,55 @@
                 @Html.EditorFor(model => model.endereco)
                 @Html.ValidationMessageFor(model => model.endereco)
             }
-            
         </div>
-
         <div class="editor-label">
             @Html.LabelFor(model => model.funcao)
         </div>
         <div class="editor-field">
             @if (ViewBag.Method == "Detail")
             {
-                @Html.DisplayFor(model => model.funcao)
+                @System.Web.Mvc.Html.MvcHtmlExtensions.FuncaoDisplayFor(Model.funcao.ToString())
             }
             else
             { 
-                @Html.EditorFor(model => model.funcao)
+                @Html.FuncaoDropdown(model => model.funcao)
                 @Html.ValidationMessageFor(model => model.funcao)                
             }
         </div>
-
     </fieldset>
     
-    ViewBag.ModelClass = "Funcionario";
-    ViewBag.Model = Model;
-    Html.RenderPartial("TelefoneTable", @ViewData);
+            ViewBag.ModelClass = "Funcionario";
+            ViewBag.Model = Model;
+            Html.RenderPartial("TelefoneTable", @ViewData);
 
-    Html.RenderPartial("RegisterPartial");
+            Html.RenderPartial("EspecialidadeTable", @ViewData);
+
+
+            {
+                ClinicaMVC3.Models.RegisterModel rm = new ClinicaMVC3.Models.RegisterModel();
+
+                if (Model != null)
+                {
+                    rm.UserName = Model.aspnet_Users.UserName;
+                    rm.Email = Model.aspnet_Users.aspnet_Membership.Email;
+                    rm.Password = Model.aspnet_Users.aspnet_Membership.Password;
+
+                }
+                Html.RenderPartial("RegisterPartial", rm);
+
+            }    
         
-<div>    
-    @if (ViewBag.Method == "Detail")
-    {
-        @Html.ActionLink("Editar", "Edit", new { id = Model.FuncionarioId});
-    }
-    else
-    {
-     <input type="button" value="Salvar" onclick="Save()" />
-    }
-    | 
-    @Html.ActionLink("Voltar", "Index")
-</div>
+    <div>
+        @if (ViewBag.Method == "Detail")
+        {
+            @Html.ActionLink("Editar", "Edit", new { id = Model.FuncionarioId });
+        }
+        else
+        {
+            <input type="button" value="Salvar" onclick="Save()" />
+        }
+        |
+        @Html.ActionLink("Voltar", "Index")
+    </div>
     
 }
-

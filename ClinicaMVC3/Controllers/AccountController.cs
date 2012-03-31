@@ -83,7 +83,7 @@ namespace ClinicaMVC3.Controllers
                 // Attempt to register the user
                 MembershipCreateStatus createStatus;
                 Membership.CreateUser(model.UserName, model.Password, model.Email, null, null, true, null, out createStatus);
-                
+
 
 
                 if (createStatus == MembershipCreateStatus.Success)
@@ -163,25 +163,25 @@ namespace ClinicaMVC3.Controllers
             switch (createStatus)
             {
                 case MembershipCreateStatus.DuplicateUserName:
-                    return "User name already exists. Please enter a different user name.";
+                    return "Usuario já existente. Por favor, entre com um nome de usuario diferente.";
 
                 case MembershipCreateStatus.DuplicateEmail:
-                    return "A user name for that e-mail address already exists. Please enter a different e-mail address.";
+                    return "Um usuario já existe com o e-mail digitado. Por favor, entre com um e-mail diferente.";
 
                 case MembershipCreateStatus.InvalidPassword:
-                    return "The password provided is invalid. Please enter a valid password value.";
+                    return "A senha fornecida é invalida. Por favor, forneça uma senha valida.";
 
                 case MembershipCreateStatus.InvalidEmail:
-                    return "The e-mail address provided is invalid. Please check the value and try again.";
+                    return "O e-mail fornecido é invalido. Por favor, verifique o valor e tente novamente.";
 
                 case MembershipCreateStatus.InvalidAnswer:
-                    return "The password retrieval answer provided is invalid. Please check the value and try again.";
+                    return "A resposta de recuperação de senha fornecida é inválida. Por favor, verifique o valor e tente novamente.";
 
                 case MembershipCreateStatus.InvalidQuestion:
-                    return "The password retrieval question provided is invalid. Please check the value and try again.";
+                    return "A questão da recuperação da senha fornecida é inválida. Por favor, verifique o valor e tente novamente.";
 
                 case MembershipCreateStatus.InvalidUserName:
-                    return "The user name provided is invalid. Please check the value and try again.";
+                    return "O usuário fornecido é inválido. Por favor, verifique o valor e tente novamente.";
 
                 case MembershipCreateStatus.ProviderError:
                     return "The authentication provider returned an error. Please verify your entry and try again. If the problem persists, please contact your system administrator.";

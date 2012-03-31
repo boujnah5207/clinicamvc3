@@ -34,5 +34,7 @@ namespace ClinicaMVC3.Models
         public DbSet<PacienteTelefone> PacienteTelefone { get; set; }
         public DbSet<Telefone> Telefone { get; set; }
         public DbSet<PlanoSaude> PlanoSaude { get; set; }
+        public DbSet<aspnet_Users> aspnet_Users { get; set; }
+        public DbSet<aspnet_Membership> aspnet_Membership { get; set; }
     }
 }

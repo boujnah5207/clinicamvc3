@@ -107,7 +107,7 @@ foreach (var entity in ItemCollection.GetItems<EntityType>().OrderBy(e => e.Name
 		
         if (code.Escape(edmProperty.TypeUsage) == "string" && Int32.TryParse(edmProperty.TypeUsage.Facets[facetName].Value.ToString(), out maxLength))		
 		{
-			WriteLine("{0}[MaxLength({1})]",CodeRegion.GetIndent(1),maxLength);
+			WriteLine("{0}[StringLength({1})]",CodeRegion.GetIndent(1),maxLength);
 		}
 		WriteProperty(code, edmProperty);
 	#>

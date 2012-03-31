@@ -26,19 +26,14 @@ namespace ClinicaMVC3.Models
         #region Primitive Properties
     	[Required(ErrorMessage="Este campo deve ser preenchido.")]
         public int PacienteId { get; set; }
-
     	[Required(ErrorMessage="Este campo deve ser preenchido.")]
-        [MaxLength(45)]
+        [StringLength(45)]
         public string Nome { get; set; }
-
     	[Required(ErrorMessage="Este campo deve ser preenchido.")]
-        [MaxLength(100)]
-        [Display(Name = "Endereço")]
+        [StringLength(100)]
         public string Endereco { get; set; }
-
-    	
-        [MaxLength(100)]
-        [Display(Name = "Observações do médico")]
+    	//[Required]
+        [StringLength(100)]
         public string ObservacaoMedico { get; set; }
 
         #endregion

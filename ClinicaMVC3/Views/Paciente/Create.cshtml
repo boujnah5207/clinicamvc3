@@ -40,25 +40,6 @@
 
         if (isValid) {
 
-
-            // 1º: Lê os dados da grade e criar um JSON
-
-            // Criando um Telefone JSON Object
-            var Telefone = {
-                "TelefoneId": "",
-                "Numero": "",
-                "Tipo": "",
-                "FuncionarioTelefone": [],
-                "PacienteTelefone": []
-            };
-
-            var PacienteTelefone = {
-                "PacienteTelefoneId": "",
-                "PacienteId": "",
-                "TelefoneId": "",
-                "Paciente": null,
-                "Telefone": ""
-            }
             // Criando um Paciente Json Object
             var Paciente = {
                 "PacienteId": "",
@@ -82,52 +63,8 @@
             Paciente.Endereco = $("#Endereco").val();
             Paciente.ObservacaoMedico = $("#ObservacaoMedico").val();
 
-            // Getting Table Data from where we will fetch Sales Sub Record
-            var oTable = $('.tbl').dataTable().fnGetData();
 
-            for (var i = 0; i < oTable.length; i++) {
-
-                // IF This view is for edit then it will read SalesId from Hidden field
-                if ($('#inputMethod').val() == "Edit") {
-                    Telefone.TelefoneId = oTable[i][2];
-                }
-                else {
-                    Telefone.TelefoneId = 0;
-                }
-
-                Telefone.Numero = oTable[i][0];
-                Telefone.Tipo = oTable[i][2];
-
-                if ($('#inputMethod').val() == "Edit") {
-                    PacienteTelefone.PacienteTelefoneId = oTable[i][3];
-                }
-                else {
-                    PacienteTelefone.PacienteTelefoneId = 0;
-                }
-
-                PacienteTelefone.TelefoneId = Telefone.TelefoneId;
-                PacienteTelefone.PacienteId = auxPacienteId;
-
-                PacienteTelefone.Telefone = Telefone;
-                Paciente.PacienteTelefone.push(PacienteTelefone);
-                Telefone = {
-                    "TelefoneId": "",
-                    "Numero": "",
-                    "Tipo": "",
-                    "FuncionarioTelefone": [],
-                    "PacienteTelefone": []
-                };
-
-                PacienteTelefone = {
-                    "PacienteTelefoneId": "",
-                    "PacienteId": "",
-                    "TelefoneId": "",
-                    "Paciente": null,
-                    "Telefone": ""
-                }
-
-            }
-
+            Paciente = JSONFuncionarioTelefone(Paciente, false);
 
             $.ajax({
                 url: '/Paciente/Create',
@@ -198,7 +135,7 @@
             }
             else
             {
-                @Html.EditorFor(model => model.ObservacaoMedico)
+                @Html.EditorFor(model => model.ObservacaoMedico)                
                 @Html.ValidationMessageFor(model => model.ObservacaoMedico)
             }
         </div>

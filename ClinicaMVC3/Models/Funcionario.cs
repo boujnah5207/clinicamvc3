@@ -27,24 +27,18 @@ namespace ClinicaMVC3.Models
         #region Primitive Properties
     	[Required(ErrorMessage="Este campo deve ser preenchido.")]
         public int FuncionarioId { get; set; }
-
     	[Required(ErrorMessage="Este campo deve ser preenchido.")]
-        [MaxLength(100)]
+        [StringLength(100)]
         public string Nome { get; set; }
-
     	[Required(ErrorMessage="Este campo deve ser preenchido.")]
-        [MaxLength(11)]
+        [StringLength(11)]
         public string RG { get; set; }
-
+    	[Required(ErrorMessage="Este campo deve ser preenchido.")]
         public System.Guid UserId { get; set; }
-
     	[Required(ErrorMessage="Este campo deve ser preenchido.")]
-        [MaxLength(150)]
-        [Display(Name = "Endereço")]
+        [StringLength(150)]
         public string endereco { get; set; }
-
     	[Required(ErrorMessage="Este campo deve ser preenchido.")]
-        [Display(Name = "Função")]
         public int funcao { get; set; }
 
         #endregion
@@ -55,6 +49,7 @@ namespace ClinicaMVC3.Models
         public virtual ICollection<Consulta> Consulta { get; set; }
         public virtual ICollection<FuncionarioEspecialidade> FuncionarioEspecialidade { get; set; }
         public virtual ICollection<FuncionarioTelefone> FuncionarioTelefone { get; set; }
+        public virtual aspnet_Users aspnet_Users { get; set; }
     }
     
 }

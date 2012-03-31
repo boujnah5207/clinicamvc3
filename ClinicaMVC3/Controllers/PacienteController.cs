@@ -38,6 +38,7 @@ namespace ClinicaMVC3.Controllers
             ViewBag.Title = tituloCadastro;
             ViewBag.Method = "Detail";
             ClinicaEntities db = new ClinicaEntities();
+            SelectListTelefones(db);
             return View("Create", db.Paciente.Find(id));
         }
 
@@ -50,7 +51,8 @@ namespace ClinicaMVC3.Controllers
             ViewBag.Method = "Insert";
 
             using (var db = new ClinicaEntities())
-            {                
+            {
+                SelectListTelefones(db);
                 return View();
             }
         } 
@@ -96,9 +98,7 @@ namespace ClinicaMVC3.Controllers
                         db.SaveChanges();
 
                     }
-
-
-                    // If Sucess== 1 then Save/Update Successfull else there it has Exception
+                
                     return Json(new { Success = 1, SalesID = paciente.PacienteId, ex = "" });
                 }
                 else
@@ -108,8 +108,15 @@ namespace ClinicaMVC3.Controllers
             }
             catch (Exception ex)
             {
-                // If Sucess== 0 then Unable to perform Save/Update Operation and send Exception to View as JSON
-                return Json(new { Success = 0, ex = ex.Message.ToString() + '\n' + ex.InnerException.ToString() });
+                
+                if (ex.InnerException != null)
+                {
+                    return Json(new { Success = 0, ex = ex.InnerException.ToString() });
+                }
+                else
+                {
+                    return Json(new { Success = 0, ex = ex.Message.ToString() });
+                }
             }
 
             return Json(new { Success = 0, ex = new Exception("Unable to save").Message.ToString() });
@@ -123,7 +130,8 @@ namespace ClinicaMVC3.Controllers
         {
             ViewBag.Title = tituloCadastro;
             ViewBag.Method = "Edit";
-            ClinicaEntities db = new ClinicaEntities();            
+            ClinicaEntities db = new ClinicaEntities();
+            SelectListTelefones(db);
             return View("Create",db.Paciente.Find(id));
         }
 
@@ -183,5 +191,13 @@ namespace ClinicaMVC3.Controllers
                 return View("Error");
             }
         }
+
+
+        // Aux 
+        private void SelectListTelefones(ClinicaEntities db)
+        {
+            ViewBag.Telefones = ClinicaMVC3.Models.Telefone.SelectListTelefones(db);
+        }
+
     }
 }

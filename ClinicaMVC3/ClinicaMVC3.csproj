@@ -85,10 +85,21 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountModels.cs" />
+    <Compile Include="Models\aspnet_Membership.cs">
+      <DependentUpon>Clinica.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\aspnet_Users.cs">
+      <DependentUpon>Clinica.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Clinica.Context1.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Clinica.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Clinica1.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Clinica.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Consulta.cs">
       <DependentUpon>Clinica.tt</DependentUpon>
@@ -224,7 +235,6 @@
     <Content Include="Content\themes\base\jquery.ui.tabs.css" />
     <Content Include="Content\themes\base\jquery.ui.theme.css" />
     <Content Include="Global.asax" />
-    <Content Include="README.jQuery.vsdoc.txt" />
     <Content Include="Scripts\DataTables-1.9.0\docs\media\js\doc.js" />
     <Content Include="Scripts\DataTables-1.9.0\docs\media\js\jquery.js" />
     <Content Include="Scripts\DataTables-1.9.0\docs\media\js\shBrushJScript.js" />
@@ -362,6 +372,7 @@
     <Content Include="Views\Funcionario\Delete.cshtml" />
     <Content Include="Views\Funcionario\Create.cshtml" />
     <Content Include="Views\Shared\RegisterPartial.cshtml" />
+    <Content Include="Views\Shared\EspecialidadeTable.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

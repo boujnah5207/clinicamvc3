@@ -8,7 +8,7 @@
         @Html.LabelFor(m => m.UserName)
     </div>
     <div class="editor-field">
-        @if (ViewBag.Method == "Detail")
+        @if ((ViewBag.Method == "Detail") || (ViewBag.Method == "Edit"))
         {
         @Html.DisplayFor(m => m.UserName)
         }
@@ -24,7 +24,7 @@
         @Html.LabelFor(m => m.Email)
     </div>
     <div class="editor-field">
-        @if (ViewBag.Method == "Detail")
+        @if ((ViewBag.Method == "Detail") || (ViewBag.Method == "Edit"))
         {
         @Html.DisplayFor(m => m.Email)
         }
@@ -39,7 +39,7 @@
         @Html.LabelFor(m => m.Password)
     </div>
     <div class="editor-field">
-        @if (ViewBag.Method == "Detail")
+        @if ((ViewBag.Method == "Detail") || (ViewBag.Method == "Edit"))
         {
         @Html.PasswordFor(m => m.Password,  new { @disabled=true })
         }
@@ -58,7 +58,7 @@
     </div>
     <div class="editor-field">
 
-        @if (ViewBag.Method == "Detail")
+        @if ((ViewBag.Method == "Detail") || (ViewBag.Method == "Edit"))
         {
         @Html.PasswordFor(m => m.ConfirmPassword, new { @disabled = true })
         }

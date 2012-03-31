@@ -6,6 +6,8 @@
     <edmx:StorageModels>
     <Schema Namespace="ClinicaModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
         <EntityContainer Name="ClinicaModelStoreContainer">
+          <EntitySet Name="aspnet_Membership" EntityType="ClinicaModel.Store.aspnet_Membership" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="aspnet_Users" EntityType="ClinicaModel.Store.aspnet_Users" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Consulta" EntityType="ClinicaModel.Store.Consulta" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Especialidade" EntityType="ClinicaModel.Store.Especialidade" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Funcionario" EntityType="ClinicaModel.Store.Funcionario" store:Type="Tables" Schema="dbo" />
@@ -22,6 +24,14 @@
           <AssociationSet Name="Consulta_Paciente" Association="ClinicaModel.Store.Consulta_Paciente">
             <End Role="Paciente" EntitySet="Paciente" />
             <End Role="Consulta" EntitySet="Consulta" />
+          </AssociationSet>
+          <AssociationSet Name="FK__aspnet_Me__UserI__22AA2996" Association="ClinicaModel.Store.FK__aspnet_Me__UserI__22AA2996">
+            <End Role="aspnet_Users" EntitySet="aspnet_Users" />
+            <End Role="aspnet_Membership" EntitySet="aspnet_Membership" />
+          </AssociationSet>
+          <AssociationSet Name="Funcionario_UserId" Association="ClinicaModel.Store.Funcionario_UserId">
+            <End Role="aspnet_Users" EntitySet="aspnet_Users" />
+            <End Role="Funcionario" EntitySet="Funcionario" />
           </AssociationSet>
           <AssociationSet Name="FuncionarioEspecialidade_EspecialidadeId" Association="ClinicaModel.Store.FuncionarioEspecialidade_EspecialidadeId">
             <End Role="Especialidade" EntitySet="Especialidade" />
@@ -48,6 +58,44 @@
             <End Role="PacienteTelefone" EntitySet="PacienteTelefone" />
           </AssociationSet>
         </EntityContainer>
+        <EntityType Name="aspnet_Membership">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="ApplicationId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Password" Type="nvarchar" Nullable="false" MaxLength="128" />
+          <Property Name="PasswordFormat" Type="int" Nullable="false" />
+          <Property Name="PasswordSalt" Type="nvarchar" Nullable="false" MaxLength="128" />
+          <Property Name="MobilePIN" Type="nvarchar" MaxLength="16" />
+          <Property Name="Email" Type="nvarchar" MaxLength="256" />
+          <Property Name="LoweredEmail" Type="nvarchar" MaxLength="256" />
+          <Property Name="PasswordQuestion" Type="nvarchar" MaxLength="256" />
+          <Property Name="PasswordAnswer" Type="nvarchar" MaxLength="128" />
+          <Property Name="IsApproved" Type="bit" Nullable="false" />
+          <Property Name="IsLockedOut" Type="bit" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime" Nullable="false" />
+          <Property Name="LastLoginDate" Type="datetime" Nullable="false" />
+          <Property Name="LastPasswordChangedDate" Type="datetime" Nullable="false" />
+          <Property Name="LastLockoutDate" Type="datetime" Nullable="false" />
+          <Property Name="FailedPasswordAttemptCount" Type="int" Nullable="false" />
+          <Property Name="FailedPasswordAttemptWindowStart" Type="datetime" Nullable="false" />
+          <Property Name="FailedPasswordAnswerAttemptCount" Type="int" Nullable="false" />
+          <Property Name="FailedPasswordAnswerAttemptWindowStart" Type="datetime" Nullable="false" />
+          <Property Name="Comment" Type="ntext" />
+        </EntityType>
+        <EntityType Name="aspnet_Users">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="ApplicationId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar" Nullable="false" MaxLength="256" />
+          <Property Name="LoweredUserName" Type="nvarchar" Nullable="false" MaxLength="256" />
+          <Property Name="MobileAlias" Type="nvarchar" MaxLength="16" />
+          <Property Name="IsAnonymous" Type="bit" Nullable="false" />
+          <Property Name="LastActivityDate" Type="datetime" Nullable="false" />
+        </EntityType>
         <EntityType Name="Consulta">
           <Key>
             <PropertyRef Name="ConsultaId" />
@@ -73,7 +121,7 @@
           <Property Name="FuncionarioId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="Nome" Type="varchar" Nullable="false" MaxLength="100" />
           <Property Name="RG" Type="varchar" Nullable="false" MaxLength="11" />
-          <Property Name="UserId" Type="uniqueidentifier" Nullable="true" />
+          <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
           <Property Name="endereco" Type="varchar" Nullable="false" MaxLength="150" />
           <Property Name="funcao" Type="int" Nullable="false" />
         </EntityType>
@@ -149,6 +197,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK__aspnet_Me__UserI__22AA2996">
+          <End Role="aspnet_Users" Type="ClinicaModel.Store.aspnet_Users" Multiplicity="1" />
+          <End Role="aspnet_Membership" Type="ClinicaModel.Store.aspnet_Membership" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="aspnet_Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="aspnet_Membership">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Funcionario_UserId">
+          <End Role="aspnet_Users" Type="ClinicaModel.Store.aspnet_Users" Multiplicity="1" />
+          <End Role="Funcionario" Type="ClinicaModel.Store.Funcionario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="aspnet_Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Funcionario">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FuncionarioEspecialidade_EspecialidadeId">
           <End Role="Especialidade" Type="ClinicaModel.Store.Especialidade" Multiplicity="1" />
           <End Role="FuncionarioEspecialidade" Type="ClinicaModel.Store.FuncionarioEspecialidade" Multiplicity="*" />
@@ -198,7 +270,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="PacienteTelefone_Paciente">
-          <End Role="Paciente" Type="ClinicaModel.Store.Paciente" Multiplicity="1" />
+          <End Role="Paciente" Type="ClinicaModel.Store.Paciente" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="PacienteTelefone" Type="ClinicaModel.Store.PacienteTelefone" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Paciente">
@@ -210,7 +284,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="PacienteTelefone_Telefone">
-          <End Role="Telefone" Type="ClinicaModel.Store.Telefone" Multiplicity="1" />
+          <End Role="Telefone" Type="ClinicaModel.Store.Telefone" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="PacienteTelefone" Type="ClinicaModel.Store.PacienteTelefone" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Telefone">
@@ -267,6 +343,16 @@
             <End Role="PacienteTelefone" EntitySet="PacienteTelefone" />
           </AssociationSet>
           <EntitySet Name="PlanoSaude" EntityType="ClinicaModel.PlanoSaude" />
+          <EntitySet Name="aspnet_Users" EntityType="ClinicaModel.aspnet_Users" />
+          <AssociationSet Name="Funcionario_UserId" Association="ClinicaModel.Funcionario_UserId">
+            <End Role="aspnet_Users" EntitySet="aspnet_Users" />
+            <End Role="Funcionario" EntitySet="Funcionario" />
+          </AssociationSet>
+          <EntitySet Name="aspnet_Membership" EntityType="ClinicaModel.aspnet_Membership" />
+          <AssociationSet Name="FK__aspnet_Me__UserI__22AA2996" Association="ClinicaModel.FK__aspnet_Me__UserI__22AA2996">
+            <End Role="aspnet_Users" EntitySet="aspnet_Users" />
+            <End Role="aspnet_Membership" EntitySet="aspnet_Membership" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Consulta">
           <Key>
@@ -275,8 +361,8 @@
           <Property Name="ConsultaId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="PacienteId" Type="Int32" Nullable="false" />
           <Property Name="MedicoId" Type="Int32" Nullable="false" />
-          <Property Name="Data" Type="DateTime" Nullable="false" />
-          <Property Name="Hora" Type="Time" Nullable="false" />
+          <Property Name="Data" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Hora" Type="Time" Nullable="false" Precision="7" />
           <Property Name="Status" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Funcionario" Relationship="ClinicaModel.Consulta_MedicoId" FromRole="Consulta" ToRole="Funcionario" />
           <NavigationProperty Name="Paciente" Relationship="ClinicaModel.Consulta_Paciente" FromRole="Consulta" ToRole="Paciente" />
@@ -296,12 +382,13 @@
           <Property Name="FuncionarioId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Nome" Type="String" Nullable="false" MaxLength="100" Unicode="false" FixedLength="false" />
           <Property Name="RG" Type="String" Nullable="false" MaxLength="11" Unicode="false" FixedLength="false" />
-          <Property Name="UserId" Type="Guid" Nullable="true" />
+          <Property Name="UserId" Type="Guid" Nullable="false" />
           <Property Name="endereco" Type="String" Nullable="false" MaxLength="150" Unicode="false" FixedLength="false" />
           <Property Name="funcao" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Consulta" Relationship="ClinicaModel.Consulta_MedicoId" FromRole="Funcionario" ToRole="Consulta" />
           <NavigationProperty Name="FuncionarioEspecialidade" Relationship="ClinicaModel.FuncionarioEspecialidade_FuncionarioId" FromRole="Funcionario" ToRole="FuncionarioEspecialidade" />
           <NavigationProperty Name="FuncionarioTelefone" Relationship="ClinicaModel.FuncionarioTelefone_Funcionario" FromRole="Funcionario" ToRole="FuncionarioTelefone" />
+          <NavigationProperty Name="aspnet_Users" Relationship="ClinicaModel.Funcionario_UserId" FromRole="Funcionario" ToRole="aspnet_Users" />
         </EntityType>
         <EntityType Name="FuncionarioEspecialidade">
           <Key>
@@ -457,6 +544,71 @@
           <Property Type="Int32" Name="PlanoSaudeId" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Descricao" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" Type="String" />
         </EntityType>
+        <EntityType Name="aspnet_Users">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Type="Guid" Name="ApplicationId" Nullable="false" />
+          <Property Type="Guid" Name="UserId" Nullable="false" />
+          <Property Type="String" Name="UserName" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="LoweredUserName" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="MobileAlias" MaxLength="16" FixedLength="false" Unicode="true" />
+          <Property Type="Boolean" Name="IsAnonymous" Nullable="false" />
+          <Property Type="DateTime" Name="LastActivityDate" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Funcionario" Relationship="ClinicaModel.Funcionario_UserId" FromRole="aspnet_Users" ToRole="Funcionario" />
+          <NavigationProperty Name="aspnet_Membership" Relationship="ClinicaModel.FK__aspnet_Me__UserI__22AA2996" FromRole="aspnet_Users" ToRole="aspnet_Membership" />
+        </EntityType>
+        <Association Name="Funcionario_UserId">
+          <End Type="ClinicaModel.aspnet_Users" Role="aspnet_Users" Multiplicity="1" />
+          <End Type="ClinicaModel.Funcionario" Role="Funcionario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="aspnet_Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Funcionario">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="aspnet_Membership">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Type="Guid" Name="ApplicationId" Nullable="false" />
+          <Property Type="Guid" Name="UserId" Nullable="false" />
+          <Property Type="String" Name="Password" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Type="Int32" Name="PasswordFormat" Nullable="false" />
+          <Property Type="String" Name="PasswordSalt" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="MobilePIN" MaxLength="16" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Email" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="LoweredEmail" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="PasswordQuestion" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="PasswordAnswer" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Type="Boolean" Name="IsApproved" Nullable="false" />
+          <Property Type="Boolean" Name="IsLockedOut" Nullable="false" />
+          <Property Type="DateTime" Name="CreateDate" Nullable="false" Precision="3" />
+          <Property Type="DateTime" Name="LastLoginDate" Nullable="false" Precision="3" />
+          <Property Type="DateTime" Name="LastPasswordChangedDate" Nullable="false" Precision="3" />
+          <Property Type="DateTime" Name="LastLockoutDate" Nullable="false" Precision="3" />
+          <Property Type="Int32" Name="FailedPasswordAttemptCount" Nullable="false" />
+          <Property Type="DateTime" Name="FailedPasswordAttemptWindowStart" Nullable="false" Precision="3" />
+          <Property Type="Int32" Name="FailedPasswordAnswerAttemptCount" Nullable="false" />
+          <Property Type="DateTime" Name="FailedPasswordAnswerAttemptWindowStart" Nullable="false" Precision="3" />
+          <Property Type="String" Name="Comment" MaxLength="1073741823" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="aspnet_Users" Relationship="ClinicaModel.FK__aspnet_Me__UserI__22AA2996" FromRole="aspnet_Membership" ToRole="aspnet_Users" />
+        </EntityType>
+        <Association Name="FK__aspnet_Me__UserI__22AA2996">
+          <End Type="ClinicaModel.aspnet_Users" Role="aspnet_Users" Multiplicity="1" />
+          <End Type="ClinicaModel.aspnet_Membership" Role="aspnet_Membership" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="aspnet_Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="aspnet_Membership">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -517,6 +669,46 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="aspnet_Users">
+            <EntityTypeMapping TypeName="ClinicaModel.aspnet_Users">
+              <MappingFragment StoreEntitySet="aspnet_Users">
+                <ScalarProperty Name="LastActivityDate" ColumnName="LastActivityDate" />
+                <ScalarProperty Name="IsAnonymous" ColumnName="IsAnonymous" />
+                <ScalarProperty Name="MobileAlias" ColumnName="MobileAlias" />
+                <ScalarProperty Name="LoweredUserName" ColumnName="LoweredUserName" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="ApplicationId" ColumnName="ApplicationId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="aspnet_Membership">
+            <EntityTypeMapping TypeName="ClinicaModel.aspnet_Membership">
+              <MappingFragment StoreEntitySet="aspnet_Membership">
+                <ScalarProperty Name="Comment" ColumnName="Comment" />
+                <ScalarProperty Name="FailedPasswordAnswerAttemptWindowStart" ColumnName="FailedPasswordAnswerAttemptWindowStart" />
+                <ScalarProperty Name="FailedPasswordAnswerAttemptCount" ColumnName="FailedPasswordAnswerAttemptCount" />
+                <ScalarProperty Name="FailedPasswordAttemptWindowStart" ColumnName="FailedPasswordAttemptWindowStart" />
+                <ScalarProperty Name="FailedPasswordAttemptCount" ColumnName="FailedPasswordAttemptCount" />
+                <ScalarProperty Name="LastLockoutDate" ColumnName="LastLockoutDate" />
+                <ScalarProperty Name="LastPasswordChangedDate" ColumnName="LastPasswordChangedDate" />
+                <ScalarProperty Name="LastLoginDate" ColumnName="LastLoginDate" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="IsLockedOut" ColumnName="IsLockedOut" />
+                <ScalarProperty Name="IsApproved" ColumnName="IsApproved" />
+                <ScalarProperty Name="PasswordAnswer" ColumnName="PasswordAnswer" />
+                <ScalarProperty Name="PasswordQuestion" ColumnName="PasswordQuestion" />
+                <ScalarProperty Name="LoweredEmail" ColumnName="LoweredEmail" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="MobilePIN" ColumnName="MobilePIN" />
+                <ScalarProperty Name="PasswordSalt" ColumnName="PasswordSalt" />
+                <ScalarProperty Name="PasswordFormat" ColumnName="PasswordFormat" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="ApplicationId" ColumnName="ApplicationId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
@@ -540,7 +732,7 @@
     <Diagrams>
       <Diagram Name="edmClinica">
         <EntityTypeShape EntityType="ClinicaModel.Consulta" Width="1.5" PointX="4.75" PointY="6" Height="2.5571907552083335" IsExpanded="true" />
-        <EntityTypeShape EntityType="ClinicaModel.Especialidade" Width="1.5" PointX="4.25" PointY="0.75" Height="1.5956835937499996" IsExpanded="true" />
+        <EntityTypeShape EntityType="ClinicaModel.Especialidade" Width="1.5" PointX="2.875" PointY="0.625" Height="1.5956835937499996" IsExpanded="true" />
         <EntityTypeShape EntityType="ClinicaModel.Funcionario" Width="1.5" PointX="0.75" PointY="3.875" Height="2.7494921874999996" IsExpanded="true" />
         <EntityTypeShape EntityType="ClinicaModel.FuncionarioEspecialidade" Width="1.5" PointX="10" PointY="0.75" Height="1.9802864583333335" IsExpanded="true" />
         <EntityTypeShape EntityType="ClinicaModel.FuncionarioTelefone" Width="3.375" PointX="9.25" PointY="6.75" Height="1.9802864583333335" IsExpanded="true" />
@@ -585,6 +777,10 @@
           <ConnectorPoint PointX="2.25" PointY="12.177643229166666" />
         </AssociationConnector>
         <EntityTypeShape EntityType="ClinicaModel.PlanoSaude" Width="1.5" PointX="0.75" PointY="0.5" Height="1.4033821614583331" />
+        <EntityTypeShape EntityType="ClinicaModel.aspnet_Users" Width="1.5" PointX="11.375" PointY="3.125" />
+        <AssociationConnector Association="ClinicaModel.Funcionario_UserId" />
+        <EntityTypeShape EntityType="ClinicaModel.aspnet_Membership" Width="1.5" PointX="14.125" PointY="3.125" />
+        <AssociationConnector Association="ClinicaModel.FK__aspnet_Me__UserI__22AA2996" />
       </Diagram>
     </Diagrams>
   </Designer>
