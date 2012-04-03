@@ -7,7 +7,7 @@ using ClinicaMVC3.Models;
 
 namespace ClinicaMVC3.Controllers
 {
-    [HandleError]
+    [HandleError, Authorize(Roles = "Administrador")]
     public class PlanoSaudeController : Controller
     {
         String tituloCadastro = "Planos de Saúde";

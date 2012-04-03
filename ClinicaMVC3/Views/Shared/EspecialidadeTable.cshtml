@@ -1,0 +1,238 @@
+﻿<script type="text/javascript">
+
+    $(document).ready(
+        function () {
+
+            /* Descricao                  0 */
+            /* EspecialidadeId            1 */
+            /* FuncionarioEspecialidadeId 2 */
+
+            $('.tblEspecialidade').dataTable(
+                {
+                    
+                    "aoColumnDefs":
+                    [
+                    { "bVisible": false, "aTargets": [1] },
+                    { "bVisible": false, "aTargets": [2] }
+
+                    ],
+                    "sDom": 'T<"clear">lfrtip',
+                    "oTableTools":
+                    {
+                        "aButtons": [],
+                        "sRowSelect": "single"
+                    },
+                    "oLanguage":
+                    {
+                        "sLengthMenu": "Mostrar _MENU_ registros por página.",
+                        "sZeroRecords": " ",
+                        "sInfo": "Mostrando _START_ até _END_ de _TOTAL_ registros",
+                        "sInfoEmpty": "Mostrando 0 até 0 de 0 registros",
+                        "sInfoFiltered": " "
+                    },
+                    "bLengthChange": false,
+                    "bSort": true,
+                    "bInfo": false,
+                    "bFilter": false,
+                    "bJQueryUI": true
+                }
+            );
+        }
+    );
+
+    /* Função que retorna o Json da tabela FuncionarioTelefone */
+    function JSONFuncionarioEspecialidade(Funcionario) {
+
+        var auxFuncionarioId = 0;
+        if ($('#inputMethod').val() == "Edit") {
+            auxFuncionarioId = $("#FuncionarioId").val();
+        } else {
+            auxFuncionarioId = 0;
+        }
+
+        //Criando especialidade JSON Object
+        var Especialidade = {
+            "EspecialidadeId": "",
+            "Descricao": "",
+            "FuncionarioEspecialidade": []
+        }
+
+        var FuncionarioEspecialidade = {
+            "FuncionarioEspecialidadeId": "",
+            "FuncionarioId": "",
+            "EspecialidadeId": "",
+            "Especialidade": "",
+            "Funcionario": null
+        }
+
+        // Efetuando leitura da jDataTable dos Detail Telefone.
+        var oTblEspecialidade = $('.tblEspecialidade').dataTable().fnGetData();
+        for (var i = 0; i < oTblEspecialidade.length; i++) {
+
+            // Se for um Edit, presumimos que já existe código.
+
+            Especialidade.EspecialidadeId = oTblEspecialidade[i][1];
+            Especialidade.Descricao = oTblEspecialidade[i][0];
+            FuncionarioEspecialidade.FuncionarioEspecialidadeId = oTblEspecialidade[i][2];
+
+            FuncionarioEspecialidade.EspecialidadeId = Especialidade.EspecialidadeId;
+            FuncionarioEspecialidade.FuncionarioId = auxFuncionarioId;
+
+            if (FuncionarioEspecialidade.EspecialidadeId == 0) {
+                FuncionarioEspecialidade.Especialidade = Especialidade;
+            }
+
+            Funcionario.FuncionarioEspecialidade.push(FuncionarioEspecialidade);
+
+            Especialidade = {
+                "EspecialidadeId": "",
+                "Descricao": "",
+                "FuncionarioEspecialidade": []
+            }
+
+            FuncionarioEspecialidade = {
+                "FuncionarioEspecialidadeId": "",
+                "FuncionarioId": "",
+                "EspecialidadeId": "",
+                "Especialidade": "",
+                "Funcionario": null
+            }
+
+        }
+        return Funcionario;
+
+    }
+
+    function DisableFields(disable) {
+        if (disable) {
+            $("#EspecialidadeId").attr("disabled", true);
+            $("#Descricao").attr("disabled", true);
+            $("#especialidadeAdd").attr("disabled", true);
+            $("#especialidadeDelete").attr("disabled", true);
+        }
+        else {
+            $("#EspecialidadeId").removeAttr("disabled");
+            $("#Descricao").removeAttr("disabled");
+            $("#especialidadeAdd").removeAttr("disabled");
+            $("#especialidadeDelete").removeAttr("disabled");
+        }
+    }
+
+    // Esta função serve para adicionar á um item na tabela
+    function Add() {
+        var isValid = false;
+
+
+        /* Verifico se foi preenchido o "edit". */
+        if (($('#Descricao').val() != null) && ($('#Descricao').val() != '')) {
+            isValid = $('form').validate().element($('#Descricao'));
+            if (isValid) {
+
+                $('.tblEspecialidade').dataTable().fnAddData([$('#Descricao').val(), /* Descricao                  0 */
+                                                 0,                                  /* EspecialidadeId            1 */
+                                                 0]);                                /* FuncionarioEspecialidadeId 2 */
+
+
+                //Esvaziando os componentes.
+                $('#Descricao').val("");
+
+            }
+        } else if ((($('#Descricao').val() == null) || ($('#Descricao').val() == '')) && ($('#EspecialidadeId option:selected').val() != null) && $('#EspecialidadeId option:selected').val() != '') {
+
+
+
+            $('.tblEspecialidade').dataTable().fnAddData([$('#EspecialidadeId option:selected').text(), /* Descricao                  0 */
+                                                              $('#EspecialidadeId option:selected').val(),  /* EspecialidadeId            1 */
+                                                              0]);                                          /* FuncionarioEspecialidadeId 2 */
+
+
+        } else {
+
+            var validator = $("form").validate();
+            validator.showErrors({ "Descricao": "É obrigatório o preenchimento da descrição." });
+        }
+
+        //Esvaziando os componentes.
+        $('#Descricao').val("");
+
+    }
+
+    function DeleteRow() {
+
+        var oTT = TableTools.fnGetInstance('tblEspecialidade'); // Get Table instance
+        if ((oTT != undefined) && (oTT != null)) {
+            var sRow = oTT.fnGetSelected(); // Get Selected Item From Table
+            if ((sRow != '') && (sRow != undefined) && (sRow != null)) {
+                $('.tblEspecialidade').dataTable().fnDeleteRow(sRow[0]);
+            }
+        }
+
+    }
+
+</script>
+<fieldset>
+    <legend>Especialidades</legend>
+    <div class="editor-label">
+        @Html.LabelFor(model => new ClinicaMVC3.Models.Especialidade().Descricao)
+    </div>
+    <div class="editor-field">
+        @if (ViewBag.Method == "Detail")
+        {
+            @Html.DisplayFor(model => new ClinicaMVC3.Models.Especialidade().Descricao)
+        }
+        else
+        {            
+            @Html.DropDownListFor(model => new ClinicaMVC3.Models.Especialidade().EspecialidadeId, (List<SelectListItem>)ViewBag.Especialidades)            
+            @Html.EditorFor(model => new ClinicaMVC3.Models.Especialidade().Descricao)
+            @Html.ValidationMessageFor(model => new ClinicaMVC3.Models.Especialidade().Descricao)
+        }
+    </div>
+    <input id="especialidadeAdd" type="button" @if (ViewBag.Method == "Detail")
+                                               {@Html.Encode("disabled")} value= "Add" onclick="Add()"  />
+    <br />
+    <table style="width: 100%;" class="tblEspecialidade" id="tblEspecialidade">
+        <thead>
+            <tr>
+                <th>
+                    Descricao
+                </th>
+                <th>
+                    EspecialidadeId
+                </th>
+                <th>
+                    FuncionarioEspecialidadeId
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (ViewData.Model != null)
+            {
+
+                foreach (var item in ViewData.Model.FuncionarioEspecialidade)
+                { 
+                <tr>
+                    <td>
+                        @item.Especialidade.Descricao
+                    </td>
+                    <td>
+                        @item.Especialidade.EspecialidadeId
+                    </td>
+                    <td>
+                        @item.FuncionarioEspecialidadeId
+                    </td>
+                </tr>
+                }
+
+            }
+        </tbody>
+    </table>
+    <br />
+    <input id="especialidadeDelete" type="button" 
+   
+   @if (ViewBag.Method == "Detail")
+   {
+       @Html.Encode("disabled")
+   }
+   
+   value="Excluir linha" onclick="DeleteRow()" />
+</fieldset>

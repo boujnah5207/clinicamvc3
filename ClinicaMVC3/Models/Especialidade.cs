@@ -19,20 +19,17 @@ namespace ClinicaMVC3.Models
         {
             this.FuncionarioEspecialidade = new HashSet<FuncionarioEspecialidade>();
         }
-    
-    
-    
+        
         #region Primitive Properties
     	[Required(ErrorMessage="Este campo deve ser preenchido.")]
         public int EspecialidadeId { get; set; }
-    	[Required(ErrorMessage="Este campo deve ser preenchido.")]
-        [StringLength(100)]
+    	
+        [Required(ErrorMessage="Este campo deve ser preenchido.")]
+        [StringLength(100, ErrorMessage = "Este campo aceita no máximo 100 carácteres")]
+        [Display(Name = "Descrição")]
         public string Descricao { get; set; }
 
         #endregion
-    
-    
-    
     
         public virtual ICollection<FuncionarioEspecialidade> FuncionarioEspecialidade { get; set; }
     }

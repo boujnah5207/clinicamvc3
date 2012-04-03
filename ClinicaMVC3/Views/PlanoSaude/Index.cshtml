@@ -15,7 +15,8 @@
 }else{
 
 
-<table>
+<table class="tbl display">
+    <thead>
     <tr>
         <th>
 			@foreach (var item in Model)
@@ -27,19 +28,21 @@
 
         <th></th>
     </tr>
-
+    </thead>
+    <tbody>
 @foreach (var item in Model) {
     <tr>
         <td>
             @Html.DisplayFor(modelItem => item.Descricao)
         </td>
         <td>
-            @Html.ActionLink("Editar", "Edit", new { id=item.PlanoSaudeId }) |
-            @Html.ActionLink("Visualizar", "Details", new { id=item.PlanoSaudeId }) |
+            @Html.ActionLink("Editar", "Edit", new { id=item.PlanoSaudeId })
+            @Html.ActionLink("Visualizar", "Details", new { id=item.PlanoSaudeId })
             @Html.ActionLink("Excluir", "Delete", new { id=item.PlanoSaudeId })
         </td>
     </tr>
 }
+</tbody>
 
 </table>
 }

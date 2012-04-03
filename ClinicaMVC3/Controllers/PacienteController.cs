@@ -7,26 +7,24 @@ using ClinicaMVC3.Models;
 using System.Data;
 
 
-//TODO: na Create, colocar em uso o "$('#Tipo option:selected').text()"
-
 //Paciente
 namespace ClinicaMVC3.Controllers
 {
 
-    [HandleError]
+    [HandleError,Authorize(Roles = "Secretaria")]
     public class PacienteController : Controller
     {
-		String tituloCadastro = "Pacientes";
-		
+        String tituloCadastro = "Pacientes";
+
         //
         // GET: /Paciente/
 
         public ActionResult Index()
         {
-		    ViewBag.Title = tituloCadastro;
+            ViewBag.Title = tituloCadastro;
             using (var db = new ClinicaEntities())
-            {                
-                return View(db.Paciente.ToList());    
+            {
+                return View(db.Paciente.ToList());
             }
         }
 
@@ -55,7 +53,7 @@ namespace ClinicaMVC3.Controllers
                 SelectListTelefones(db);
                 return View();
             }
-        } 
+        }
 
         //
         // POST: /Paciente/Create
@@ -67,6 +65,12 @@ namespace ClinicaMVC3.Controllers
             {
                 if (ModelState.IsValid)
                 {
+
+                    if (paciente.PacienteTelefone.Count == 0)
+                    {
+                        return Json(new { Success = 0, ex = "O paciente deve possuir ao menos um telefone cadastrado!" });
+                    }
+
                     using (var db = new ClinicaEntities())
                     {
                         // Se o código do paciente é maior que zero, entendemos que existe registro para tal.
@@ -98,7 +102,7 @@ namespace ClinicaMVC3.Controllers
                         db.SaveChanges();
 
                     }
-                
+
                     return Json(new { Success = 1, SalesID = paciente.PacienteId, ex = "" });
                 }
                 else
@@ -108,7 +112,7 @@ namespace ClinicaMVC3.Controllers
             }
             catch (Exception ex)
             {
-                
+
                 if (ex.InnerException != null)
                 {
                     return Json(new { Success = 0, ex = ex.InnerException.ToString() });
@@ -122,17 +126,17 @@ namespace ClinicaMVC3.Controllers
             return Json(new { Success = 0, ex = new Exception("Unable to save").Message.ToString() });
         }
 
-        
+
         //
         // GET: /Paciente/Edit/5
- 
+
         public ActionResult Edit(int id)
         {
             ViewBag.Title = tituloCadastro;
             ViewBag.Method = "Edit";
             ClinicaEntities db = new ClinicaEntities();
             SelectListTelefones(db);
-            return View("Create",db.Paciente.Find(id));
+            return View("Create", db.Paciente.Find(id));
         }
 
         //
@@ -145,7 +149,7 @@ namespace ClinicaMVC3.Controllers
             try
             {
                 ClinicaEntities db = new ClinicaEntities();
-                
+
                 db.Entry(paciente).State = System.Data.EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -153,13 +157,14 @@ namespace ClinicaMVC3.Controllers
             catch (Exception e)
             {
                 ViewBag.Error = e;
+                
                 return View("Error");
             }
         }
 
         //
         // GET: /Paciente/Delete/5
- 
+
         public ActionResult Delete(int id)
         {
             ViewBag.Title = tituloCadastro;
@@ -187,16 +192,83 @@ namespace ClinicaMVC3.Controllers
             }
             catch (Exception e)
             {
-                ViewBag.Error = e;
-                return View("Error");
+                /*ViewBag.Error = e;*/
+                TempData["Error"] = e;
+                return RedirectToAction("Error", "Error");
+                /*return View("Error");*/
             }
         }
 
 
         // Aux 
+
+        public JsonResult SelectListPacientes()
+        {
+            using (var db = new ClinicaEntities())
+            {
+                List<SelectListItem> list = new List<SelectListItem>();
+
+                foreach (Paciente item in db.Paciente.ToList())
+                {
+                    list.Add(
+                        new SelectListItem()
+                        {
+                            Value = item.PacienteId.ToString(),
+                            Text = item.Nome,
+                            Selected = false
+                        });
+                }
+
+                return this.Json(list);
+            }
+        }
+
+
+        public ActionResult PacienteDialog()
+        {
+            ViewBag.Title = tituloCadastro;
+            ViewBag.Method = "Insert";
+
+            using (var db = new ClinicaEntities())
+            {
+                SelectListTelefones(db);
+                ViewBag.isDialog = true;
+                return PartialView("PacientePartial");
+            }
+
+        }
+
+
+
         private void SelectListTelefones(ClinicaEntities db)
         {
-            ViewBag.Telefones = ClinicaMVC3.Models.Telefone.SelectListTelefones(db);
+            ViewBag.Telefones = ClinicaMVC3.Controllers.TelefoneController.SelectListTelefones(db);
+        }
+
+        public static List<SelectListItem> getPacientes()
+        {
+            List<SelectListItem> list = new List<SelectListItem>();
+            using (var db = new ClinicaEntities())
+            {
+                foreach (var item in db.Paciente.ToList())
+                {
+                    SelectListItem li = new SelectListItem();
+                    li.Value = item.PacienteId.ToString();
+                    li.Text = item.Nome;
+                    list.Add(li);
+                }
+            }
+
+            return list;
+
+        }
+
+        public static Paciente getPaciente(int Id)
+        {
+            using (var db = new ClinicaEntities())
+            {
+                return db.Paciente.Find(Id);
+            }
         }
 
     }

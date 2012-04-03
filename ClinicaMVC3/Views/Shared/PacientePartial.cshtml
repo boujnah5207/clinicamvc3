@@ -1,0 +1,145 @@
+﻿@model ClinicaMVC3.Models.Paciente
+<script type="text/javascript">
+
+    //Esta função será usada para montar um JSON e mandar para o "PacienteController"
+    function Save() {
+        var isValid = false;
+
+        isValid = ($('form').validate().element($('#Nome')));
+        isValid = ($('form').validate().element($('#Endereco'))) ? isValid : false;
+        isValid = ($('form').validate().element($('#DataNascimento'))) ? isValid : false;
+
+        if (isValid) {
+
+            // Criando um Paciente Json Object
+            var Paciente = {
+                "PacienteId": "",
+                "Nome": "",
+                "Endereco": "",
+                "DataNascimento": "",
+                "Consulta": [],
+                "PacienteTelefone": []
+            };
+
+            var auxPacienteId = 0;
+            // Set Sales Main Value
+            if ($('#inputMethod').val() == "Edit") {
+                auxPacienteId = $("#PacienteId").val();
+            } else {
+                auxPacienteId = 0;
+            }
+
+            Paciente.PacienteId = auxPacienteId;
+            Paciente.Nome = $("#Nome").val();
+            Paciente.Endereco = $("#Endereco").val();
+            Paciente.DataNascimento = $("#DataNascimento").val();
+
+            Paciente = JSONFuncionarioTelefone(Paciente, false);
+
+            $.ajax({
+                url: '/Paciente/Create',
+                data: JSON.stringify(Paciente),
+                type: 'POST',
+                contentType: 'application/json;',
+                dataType: 'json',
+                success: function (result) {
+
+                    if (result.Success == "1") {
+                        @if ((ViewBag.isDialog != null)&&(ViewBag.isDialog == true)) {
+                            @MvcHtmlString.Create("$(\"#dialog\").dialog(\"close\");")
+                        }else{
+                            @MvcHtmlString.Create("window.location.href = \"/Paciente/index\";")
+                            
+                        }
+                    }
+                    else {
+                        var validator = $("#form1").validate();
+                        validator.showErrors({ "Numero": result.ex });
+                    }
+                }
+            });
+
+        }
+
+
+    }
+
+
+</script>
+
+
+@using (Html.BeginForm("Create", "Paciente", FormMethod.Post, new { id="form1" }))
+{
+    
+    @Html.ValidationSummary(true)
+    <fieldset>        
+        @Html.HiddenFor(model => model.PacienteId)
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Nome)
+        </div>
+        <div class="editor-field">
+            @if (ViewBag.Method == "Detail")
+            {
+                @Html.DisplayFor(model => model.Nome)    
+            }
+            else
+            {
+                @Html.EditorFor(model => model.Nome)
+                @Html.ValidationMessageFor(model => model.Nome)
+            }
+            
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Endereco)
+        </div>
+        <div class="editor-field">
+            @if (ViewBag.Method == "Detail")
+            {
+                @Html.DisplayFor(model => model.Endereco)    
+            }
+            else
+            {
+                @Html.EditorFor(model => model.Endereco)
+                @Html.ValidationMessageFor(model => model.Endereco)
+            }
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.DataNascimento)
+        </div>
+        <div class="editor-field">
+            @if (ViewBag.Method == "Detail")
+            {
+                @Html.DisplayFor(model => model.DataNascimento)    
+            }
+            else
+            {
+                @Html.TextBoxFor(model => model.DataNascimento, new { Class = "datepicker" })
+                @Html.ValidationMessageFor(model => model.DataNascimento)
+            }
+        </div>
+    </fieldset>
+    
+            ViewBag.ModelClass = "Paciente";
+            ViewBag.Model = Model;
+            Html.RenderPartial("TelefoneTable", @ViewData);
+            Html.ValidationMessage("TelefoneValidacao");
+
+    
+    
+<div>    
+    
+    @if (ViewBag.Method == "Detail")
+    {
+        @Html.ActionLink("Editar", "Edit", new { id = Model.PacienteId });
+    }
+    else
+    {
+     <input type="button" value="Salvar" onclick="Save()" />
+    }
+@if (!((ViewBag.isDialog != null)&&(ViewBag.isDialog == true))) {
+    @Html.ActionLink("Voltar", "Index")
+}
+</div>
+}

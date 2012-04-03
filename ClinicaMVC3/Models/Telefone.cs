@@ -8,45 +8,13 @@
 //------------------------------------------------------------------------------
 
 using System;
-
-using System.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using ClinicaMVC3.Models;
-using System.Data;
-using System.Web.Security;
-using ClinicaMVC3.Controllers;
-
+using System.ComponentModel.DataAnnotations;
 
 namespace ClinicaMVC3.Models
 {
     public partial class Telefone
     {
-
-        public static List<SelectListItem> SelectListTelefones(ClinicaEntities db)
-        {
-            Array enums = Enum.GetValues(typeof(ClinicaMVC3.Models.Telefone.tipoTelefone));
-            List<SelectListItem> selectList = new List<SelectListItem>();
-            foreach (var telefone in db.Telefone.ToList())
-            {
-                selectList.Add(new SelectListItem()
-                {
-                    Value = telefone.TelefoneId.ToString(),
-                    Text = telefone.Numero,
-                    Selected = false
-                });
-            }
-            return selectList;
-        }
-
-        public enum tipoTelefone
-        {
-            Celular = 1 ,
-            Telefone= 2
-        }
-
         public Telefone()
         {
             this.FuncionarioTelefone = new HashSet<FuncionarioTelefone>();
@@ -58,9 +26,13 @@ namespace ClinicaMVC3.Models
         #region Primitive Properties
     	[Required(ErrorMessage="Este campo deve ser preenchido.")]
         public int TelefoneId { get; set; }
+
     	[Required(ErrorMessage="Este campo deve ser preenchido.")]
-        [StringLength(15)]
+        [StringLength(15, ErrorMessage = "Este campo aceita no máximo 15 carácteres")]
+        [Display(Name="Número")]
+        [RegularExpression(@"^\(?\d{3}\)?[\s-]?\d{4}-?\d{4}$", ErrorMessage = "Entre com o formato correto: (0xx) 0000-0000")]
         public string Numero { get; set; }
+
     	[Required(ErrorMessage="Este campo deve ser preenchido.")]
         public int Tipo { get; set; }
 

@@ -1,0 +1,57 @@
+﻿@model ClinicaMVC3.Models.Consulta
+@{
+}
+<h2>@ViewBag.Title</h2>
+<h3>
+    Exclusão de registro</h3>
+<span>Consulta desmarcada antes da data prevista será excluida, confirma?</span>
+@using (Html.BeginForm("Delete", "Consulta", new { id = Model.ConsultaId}))
+{
+    <fieldset>
+        @Html.HiddenFor(model => model.ConsultaId)
+        <div class="display-label">
+            @Html.LabelFor(model => model.PacienteId)
+        </div>
+        <div class="display-field">
+            @Html.HiddenFor(model => model.PacienteId)
+            @MvcHtmlString.Create(ClinicaMVC3.Controllers.PacienteController.getPaciente(Model.PacienteId).Nome)            
+        </div>
+        <div class="display-label">
+            @Html.LabelFor(model => model.MedicoId)
+        </div>
+        <div class="display-field">
+            @Html.HiddenFor(model => model.MedicoId)
+            @MvcHtmlString.Create(ClinicaMVC3.Controllers.FuncionarioController.getFuncionario(Model.MedicoId).Nome)
+        </div>
+        <div class="display-label">
+            @Html.LabelFor(model => model.Data)
+        </div>
+        <div class="display-field">
+            @Html.HiddenFor(model => model.Data)
+            @MvcHtmlString.Create(Model.Data.ToShortDateString())
+
+        </div>
+        <div class="display-label">
+            @Html.LabelFor(model => model.Hora)
+        </div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.Hora)
+        </div>
+
+        <div class="display-label">
+            @Html.LabelFor(model => model.ObservacaoMedico)
+        </div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.ObservacaoMedico)
+        </div>
+
+        <div class="display-field">
+            @Html.HiddenFor(model => model.Status)
+        </div>
+        <p>
+            <input type="submit" value="Excluir" />            
+            @Html.ActionLink("Voltar", "Index")
+        </p>
+    </fieldset>
+
+}

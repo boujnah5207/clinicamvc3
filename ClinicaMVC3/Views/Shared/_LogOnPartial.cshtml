@@ -1,7 +1,8 @@
 ﻿@if(Request.IsAuthenticated) {
-    <text>Welcome <strong>@User.Identity.Name</strong>!
-    [ @Html.ActionLink("Log Off", "LogOff", "Account") ]</text>
+    <text>Bem-vindo(a) <strong>@User.Identity.Name</strong>!
+     @Html.ActionLink("Log Off", "LogOff", "Account", null, new { Style = "color:#2E6E9E" }) </text>
 }
-else {
-    @:[ @Html.ActionLink("Log On", "LogOn", "Account") ]
+else
+{
+    @Html.ActionLink("Log On", "LogOn", "Account", null, new { Style = "color:#2E6E9E" }) 
 }
