@@ -1,0 +1,90 @@
+﻿@using ClinicaMVC3.Controllers
+@model IEnumerable<ClinicaMVC3.Models.Consulta>
+@{
+    
+}
+<h2>
+    Listagem de @ViewBag.Title
+</h2>
+<p>
+    @Html.ActionLink("Agendar consulta", "Create").If(Roles.IsUserInRole("Secretaria"))
+</p>
+@if (Model.Count() == 0)
+{
+    <span>Não há registros para listar.</span>
+}
+else
+{
+
+    <div class="demo_jui">
+    <table class="tbl display" id="tbl">
+        <thead>
+            <tr>
+                <th>
+                    @foreach (var item in Model)
+                    {
+                        @Html.LabelFor(model => item.PacienteId)
+                        break;
+                    }
+                </th>
+                <th>
+                    @foreach (var item in Model)
+                    {
+                        @Html.LabelFor(model => item.MedicoId)
+                        break;
+                    }
+                </th>
+                <th>
+                    @foreach (var item in Model)
+                    {
+                        @Html.LabelFor(model => item.Data)
+                        break;
+                    }
+                </th>
+                <th>
+                    @foreach (var item in Model)
+                    {
+                        @Html.LabelFor(model => item.Hora)
+                        break;
+                    }
+                </th>
+                <th>
+                    @foreach (var item in Model)
+                    {
+                        @Html.LabelFor(model => item.Status)
+                        break;
+                    }
+                </th>
+                <th>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Paciente.Nome)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Funcionario.Nome)
+                </td>
+                <td>
+                    @MvcHtmlString.Create(item.Data.ToShortDateString())                    
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Hora)
+                </td>
+                <td>
+                    @MvcHtmlString.Create(ConsultaController.getStatusText(item.Status))
+                </td>
+                <td>
+                    @Html.ActionLink("Realizar consulta", "RealizarConsulta", new { id = item.ConsultaId }).If(Roles.IsUserInRole("Medico"))
+                    @Html.ActionLink("Desmarcar consulta/Registrar não comparecimento", "DesmarcarConsulta", new { id = item.ConsultaId }).If(Roles.IsUserInRole("Secretaria"))
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+    </div>
+}

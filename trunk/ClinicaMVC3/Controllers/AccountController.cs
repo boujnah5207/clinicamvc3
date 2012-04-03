@@ -46,7 +46,7 @@ namespace ClinicaMVC3.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError("", "The user name or password provided is incorrect.");
+                    ModelState.AddModelError("", "O nome de usuário ou senha fornecido está incorreto.");
                 }
             }
 
@@ -66,7 +66,7 @@ namespace ClinicaMVC3.Controllers
 
         //
         // GET: /Account/Register
-
+        [Authorize(Roles = "Administrador")]
         public ActionResult Register()
         {
             return View();
@@ -76,6 +76,7 @@ namespace ClinicaMVC3.Controllers
         // POST: /Account/Register
 
         [HttpPost]
+        [Authorize(Roles = "Administrador")]
         public ActionResult Register(RegisterModel model)
         {
             if (ModelState.IsValid)
@@ -139,7 +140,7 @@ namespace ClinicaMVC3.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError("", "The current password is incorrect or the new password is invalid.");
+                    ModelState.AddModelError("", "A senha atual está incorreta ou a nova senha é inválida.");
                 }
             }
 

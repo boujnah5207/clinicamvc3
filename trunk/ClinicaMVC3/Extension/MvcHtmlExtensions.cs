@@ -6,16 +6,17 @@ using System.Linq.Expressions;
 using System.Web.Routing;
 using System.Collections;
 using System.Globalization;
+using System.Web.Security;
 
 namespace System.Web.Mvc.Html
 {
     public static class MvcHtmlExtensions
     {
-        #region Telefone 
+        #region Telefone(Funcionário/Paciente) 
         private static List<SelectListItem> TelefoneList()
         {
 
-            Array enums = Enum.GetValues(typeof(ClinicaMVC3.Models.Telefone.tipoTelefone));
+            Array enums = Enum.GetValues(typeof(ClinicaMVC3.Controllers.TelefoneController.tipoTelefone));
 
             List<SelectListItem> list = new List<SelectListItem>();
             for (int i = 0; i < enums.Length; i++)
@@ -69,28 +70,22 @@ namespace System.Web.Mvc.Html
 
         #endregion
 
-        #region Função
+        #region Função(Funcionário)
         private static List<SelectListItem> FuncaoList()
         {
-            SelectListItem li = new SelectListItem();
-            li.Value = "1";
-            li.Text = "Administrador";
-
-            SelectListItem li1 = new SelectListItem();
-            li1.Value = "2";
-            li1.Text = "Secretária";
-
-
-            SelectListItem li2 = new SelectListItem();
-            li2.Value = "3";
-            li2.Text = "Médico";
+            Array enums = Enum.GetValues(typeof(ClinicaMVC3.Controllers.FuncionarioController.funcao));
 
             List<SelectListItem> list = new List<SelectListItem>();
-            list.Add(li);
-            list.Add(li1);
-            list.Add(li2);
+            for (int i = 0; i < enums.Length; i++)
+            {
+                SelectListItem li = new SelectListItem();
+                li.Value = (i + 1).ToString();
+                li.Text = enums.GetValue(i).ToString();
+                list.Add(li);
+            }
 
             return list;
+            
         }
 
         public static MvcHtmlString FuncaoDisplayFor(String codTipo)
@@ -137,7 +132,70 @@ namespace System.Web.Mvc.Html
 
         #endregion
 
+        #region Status(Consulta)
+        private static List<SelectListItem> StatusList()
+        {
+            Array enums = Enum.GetValues(typeof(ClinicaMVC3.Controllers.ConsultaController.Status));
 
+            List<SelectListItem> list = new List<SelectListItem>();
+            for (int i = 0; i < enums.Length; i++)
+            {
+                SelectListItem li = new SelectListItem();
+                li.Value = (i + 1).ToString();
+                li.Text = enums.GetValue(i).ToString().Replace('_',' ').Replace("Nao","Não");
+                list.Add(li);
+            }
+
+            return list;
+
+        }
+
+        public static MvcHtmlString StatusDisplayFor(String codTipo)
+        {
+
+            String auxText = "";
+            foreach (SelectListItem item in StatusList())
+            {
+                if (Int32.Parse(item.Value) == Int32.Parse(codTipo))
+                {
+                    auxText = item.Text;
+                    break;
+                }
+            }
+
+            return new MvcHtmlString(auxText);
+        }
+
+        public static MvcHtmlString StatusDropdown<TModel, TEnum>(this HtmlHelper<TModel> htmlHelper, Expression<Func<TModel, TEnum>> expression)
+        {
+
+            List<SelectListItem> list = StatusList();
+
+            return htmlHelper.DropDownListFor(
+                expression,
+                list.AsEnumerable()
+            );
+
+            
+        }
+
+
+        public static MvcHtmlString StatusDropdown<TModel, TEnum>(this HtmlHelper<TModel> htmlHelper, Expression<Func<TModel, TEnum>> expression, object htmlAttributes)
+        {
+
+            List<SelectListItem> list = StatusList();
+
+            return htmlHelper.DropDownListFor(
+                expression,
+                list.AsEnumerable(),
+                htmlAttributes
+            );
+
+        }
+
+        #endregion
+
+        #region Outras extensões
         public static MvcHtmlString EnumDropDownListFor<TModel, TEnum>(this HtmlHelper<TModel> htmlHelper, Expression<Func<TModel, TEnum>> expression)
         {
             ModelMetadata metadata = ModelMetadata.FromLambdaExpression(expression, htmlHelper.ViewData);
@@ -158,19 +216,19 @@ namespace System.Web.Mvc.Html
         }
 
         public static MvcHtmlString TextBoxFor<TModel, TValue>(this HtmlHelper<TModel> htmlHelper,
-            Expression<Func<TModel, TValue>> expression, bool editable)
+            Expression<Func<TModel, TValue>> expression, String regex)
         {
             MvcHtmlString html = default(MvcHtmlString);
 
-            if (editable)
-            {
-                html = Html.InputExtensions.TextBoxFor(htmlHelper, expression);
-            }
-            else
-            {
-                html = Html.InputExtensions.TextBoxFor(htmlHelper, expression,
-                    new { @class = "readOnly", @readonly = "read-only" });
-            }
+            String aux = Html.DisplayExtensions.DisplayFor(htmlHelper, expression).ToString();
+
+
+
+            html = Html.InputExtensions.TextBoxFor(htmlHelper, expression);
+
+
+              
+
             return html;
         }
 
@@ -255,6 +313,49 @@ namespace System.Web.Mvc.Html
                 html = Html.InputExtensions.TextBoxFor(htmlHelper, expression, routeValues);
             }
             return html;
+        }
+        #endregion
+
+        public static MvcHtmlString Warning(this HtmlHelper htmlHelper, String text)
+        {
+            String result = "<div class=\"ui-state-highlight ui-corner-all\">" +
+                            "<span class=\"ui-icon ui-icon-info\" style=\"float: left; margin-right: .3em;\"></span>" + 
+                            text + "</div>";
+            return MvcHtmlString.Create(result);
+        }
+
+        public static MvcHtmlString Error(this HtmlHelper htmlHelper, dynamic text)
+        {
+            String result = "<div class=\"ui-state-error ui-corner-all\" style=\"padding: 0 .7em;\"><p>" +
+                            "<span class=\"ui-icon ui-icon-alert\" style=\"float: left; margin-right: .3em;\"></span>" +
+                            text +
+                            "</p></div>";
+            return MvcHtmlString.Create(result);
+        }
+    }
+
+    public static class LinkExtensions
+    {
+        public static MvcHtmlString If(this MvcHtmlString value, bool evaluation)
+        {
+            return evaluation ? value : MvcHtmlString.Empty;
+        }
+
+
+        public static IHtmlString ActionLinkRoles(
+            this HtmlHelper htmlHelper,
+            string linkText,
+            string actionName,
+            string controllerName
+        )
+        {
+            /*
+            if (!Roles.IsUserInRole(roles))
+            {
+                return MvcHtmlString.Empty;
+            }
+             */
+            return htmlHelper.ActionLink(linkText, actionName,controllerName);
         }
     }
 

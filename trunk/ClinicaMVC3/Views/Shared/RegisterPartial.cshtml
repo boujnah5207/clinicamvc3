@@ -10,7 +10,8 @@
     <div class="editor-field">
         @if ((ViewBag.Method == "Detail") || (ViewBag.Method == "Edit"))
         {
-        @Html.DisplayFor(m => m.UserName)
+        @Html.DisplayTextFor(m => m.UserName)
+        @Html.HiddenFor(m => m.UserName)
         }
         else
         {
@@ -26,7 +27,7 @@
     <div class="editor-field">
         @if ((ViewBag.Method == "Detail") || (ViewBag.Method == "Edit"))
         {
-        @Html.DisplayFor(m => m.Email)
+        @Html.DisplayTextFor(m => m.Email)
         }
         else
         {
@@ -41,7 +42,7 @@
     <div class="editor-field">
         @if ((ViewBag.Method == "Detail") || (ViewBag.Method == "Edit"))
         {
-        @Html.PasswordFor(m => m.Password,  new { @disabled=true })
+        @Html.PasswordFor(m => m.Password, new { @disabled = true })
         }
         else
         {

@@ -1,0 +1,144 @@
+﻿@using ClinicaMVC3.Controllers
+@model ClinicaMVC3.Models.Consulta
+@{
+}
+<h2>@ViewBag.Title</h2>
+<h3>
+    Inserir Novo</h3>
+<script type="text/javascript">
+    $(function () {
+
+        $.fn.clearSelect = function () {
+            return this.each(function () {
+                if (this.tagName == 'SELECT')
+                    this.options.length = 0;
+            });
+        }
+
+        $.fn.fillSelect = function (data) {
+            return this.clearSelect().each(function () {
+                if (this.tagName == 'SELECT') {
+                    var dropdownList = this;
+
+                    $.each(data, function (index, optionData) {
+                        var option = new Option(optionData.Text, optionData.Value);
+
+                        if ($.browser.msie) {
+                            dropdownList.add(option);
+                        }
+                        else {
+                            dropdownList.add(option, null);
+                        }
+                    });
+
+                }
+
+            });
+
+        }
+
+
+        $('#dialog').dialog({
+            autoOpen: false,
+            width: 800,
+            heigth: 100,
+            resizable: false,
+            title: 'Cadastro de Pacientes',
+            modal: true,
+            position: 'top',
+            open: function (event, ui) {
+
+            },
+            close: function (event, ui) {
+
+                try {
+                    $.ajax({
+                        url: '/Paciente/SelectListPacientes',
+                        type: 'POST',
+                        contentType: 'application/json;',
+                        dataType: 'json',
+                        success: function (result) {
+                            $("#PacienteId").clearSelect();
+                            $("#PacienteId").fillSelect(result);
+
+                            $('#PacienteId option').each(function () {
+                                if ($(this).val() == result[result.length - 1].Value) {
+                                    $(this).attr('selected', true);
+                                }
+                            });
+
+                        }
+                    });
+                } catch (e) {
+                    alert(e.Message);
+                }
+
+            },
+            buttons: {
+                "Close": function () {
+                    $(this).dialog("close");
+                }
+            }
+        });
+
+        $('#btnCadastroPaciente').click(function () {
+            $('#dialog').dialog('open').parent().appendTo(jQuery("form:first"));
+        });
+    });
+</script>
+<div id="dialog" title="Cadastro paciente" style="overflow: hidden">
+@{    
+    Html.RenderAction("PacienteDialog","Paciente");   
+}
+</div>
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+    <fieldset>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.PacienteId)
+        </div>
+        <div class="editor-field">
+            @Html.DropDownListFor(model => model.PacienteId, PacienteController.getPacientes())
+            @Html.ValidationMessageFor(model => model.PacienteId)
+
+            <input type="button" name="btnCadastroPaciente" id="btnCadastroPaciente" value="Cadastrar novo paciente" />
+
+        </div>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.MedicoId)
+        </div>
+        <div class="editor-field">
+            @Html.DropDownListFor(model => model.MedicoId, FuncionarioController.getMedicos())
+            @Html.ValidationMessageFor(model => model.MedicoId)
+        </div>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Data)
+        </div>
+        <div class="editor-field">
+            @Html.TextBoxFor(model => model.Data, new { Class = "datepicker" })
+            @Html.ValidationMessageFor(model => model.Data)
+        </div>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Hora)
+        </div>
+        <div class="editor-field">
+            @Html.TextBoxFor(model => model.Hora)
+            @Html.ValidationMessageFor(model => model.Hora)
+        </div>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Status)
+        </div>
+        <div class="editor-field">
+            @Html.StatusDropdown(model => model.Status, new { disabled = true })
+            @Html.HiddenFor(model => model.Status, new { value = 1 })
+            @Html.ValidationMessageFor(model => model.Status)
+        </div>
+        <p>
+            <input type="submit" value="Salvar" />
+        </p>
+    </fieldset>
+}
+<div>
+    @Html.ActionLink("Voltar", "Index")
+</div>

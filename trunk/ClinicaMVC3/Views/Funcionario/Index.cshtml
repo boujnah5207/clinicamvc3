@@ -1,89 +1,80 @@
-﻿@model IEnumerable<ClinicaMVC3.Models.Funcionario>
-
+﻿@using ClinicaMVC3.Controllers
+@model IEnumerable<ClinicaMVC3.Models.Funcionario>
 @{
     
 }
-
-<h2> Listagem de @ViewBag.Title </h2>
-
+<h2>
+    Listagem de @ViewBag.Title
+</h2>
 <p>
     @Html.ActionLink("Novo", "Create")
 </p>
-
-@if (Model.Count()==0) {
-	<span>Não há registros para listar.</span>
-}else{
-
-
-<table>
-    <tr>
-        <th>
-			@foreach (var item in Model)
-            {
-				@Html.LabelFor(model => item.Nome)
-				break;
-			}
-         </th>
-
-        <th>
-			@foreach (var item in Model)
-            {
-				@Html.LabelFor(model => item.RG)
-				break;
-			}
-         </th>
-
-        <th>
-			@foreach (var item in Model)
-            {
-				@Html.LabelFor(model => item.UserId)
-				break;
-			}
-         </th>
-
-        <th>
-			@foreach (var item in Model)
-            {
-				@Html.LabelFor(model => item.endereco)
-				break;
-			}
-         </th>
-
-        <th>
-			@foreach (var item in Model)
-            {
-				@Html.LabelFor(model => item.funcao)
-				break;
-			}
-         </th>
-
-        <th></th>
-    </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Nome)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.RG)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.UserId)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.endereco)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.funcao)            
-        </td>
-        <td>
-            @Html.ActionLink("Editar", "Edit", new { id=item.FuncionarioId }) |
-            @Html.ActionLink("Visualizar", "Details", new { id=item.FuncionarioId }) |
-            @Html.ActionLink("Excluir", "Delete", new { id=item.FuncionarioId })
-        </td>
-    </tr>
+@if (Model.Count() == 0)
+{
+    <span>Não há registros para listar.</span>
 }
+else
+{
 
-</table>
+
+    <table class="tbl display">
+        <thead>
+            <tr>
+                <th>
+                    @foreach (var item in Model)
+                    {
+                        @Html.LabelFor(model => item.Nome)
+                        break;
+                    }
+                </th>
+                <th>
+                    @foreach (var item in Model)
+                    {
+                        @Html.LabelFor(model => item.RG)
+                        break;
+                    }
+                </th>
+                <th>
+                    @foreach (var item in Model)
+                    {
+                        @Html.LabelFor(model => item.endereco)
+                        break;
+                    }
+                </th>
+                <th>
+                    @foreach (var item in Model)
+                    {
+                        @Html.LabelFor(model => item.funcao)
+                        break;
+                    }
+                </th>
+                <th>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nome)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RG)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.endereco)
+                </td>
+                <td>
+                    @MvcHtmlString.Create(FuncionarioController.getFuncaoText(item.funcao))
+                </td>
+                <td>
+                    @Html.ActionLink("Editar", "Edit", new { id = item.FuncionarioId })
+                    @Html.ActionLink("Visualizar", "Details", new { id = item.FuncionarioId })
+                    @Html.ActionLink("Excluir", "Delete", new { id = item.FuncionarioId })
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
 }

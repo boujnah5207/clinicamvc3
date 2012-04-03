@@ -1,10 +1,20 @@
-C:\Users\Evandro\documents\visual studio 2010\Projects\ClinicaMVC3\ClinicaMVC3\bin\ClinicaMVC3.dll
-C:\Users\Evandro\documents\visual studio 2010\Projects\ClinicaMVC3\ClinicaMVC3\bin\ClinicaMVC3.pdb
-C:\Users\Evandro\documents\visual studio 2010\Projects\ClinicaMVC3\ClinicaMVC3\bin\DataAnnotationsExtensions.ClientValidation.dll
-C:\Users\Evandro\documents\visual studio 2010\Projects\ClinicaMVC3\ClinicaMVC3\bin\DataAnnotationsExtensions.dll
-C:\Users\Evandro\documents\visual studio 2010\Projects\ClinicaMVC3\ClinicaMVC3\bin\EntityFramework.dll
-C:\Users\Evandro\documents\visual studio 2010\Projects\ClinicaMVC3\ClinicaMVC3\bin\WebActivator.dll
-C:\Users\Evandro\documents\visual studio 2010\Projects\ClinicaMVC3\ClinicaMVC3\bin\EntityFramework.xml
-C:\Users\Evandro\documents\visual studio 2010\Projects\ClinicaMVC3\ClinicaMVC3\obj\Debug\ResolveAssemblyReference.cache
-C:\Users\Evandro\documents\visual studio 2010\Projects\ClinicaMVC3\ClinicaMVC3\obj\Debug\ClinicaMVC3.dll
-C:\Users\Evandro\documents\visual studio 2010\Projects\ClinicaMVC3\ClinicaMVC3\obj\Debug\ClinicaMVC3.pdb
+C:\Users\Evandro\Documents\Visual Studio 2010\Projects\ClinicaMVC3\ClinicaMVC3\bin\ClinicaMVC3.dll
+C:\Users\Evandro\Documents\Visual Studio 2010\Projects\ClinicaMVC3\ClinicaMVC3\bin\ClinicaMVC3.pdb
+C:\Users\Evandro\Documents\Visual Studio 2010\Projects\ClinicaMVC3\ClinicaMVC3\bin\DataAnnotationsExtensions.ClientValidation.dll
+C:\Users\Evandro\Documents\Visual Studio 2010\Projects\ClinicaMVC3\ClinicaMVC3\bin\DataAnnotationsExtensions.dll
+C:\Users\Evandro\Documents\Visual Studio 2010\Projects\ClinicaMVC3\ClinicaMVC3\bin\EntityFramework.dll
+C:\Users\Evandro\Documents\Visual Studio 2010\Projects\ClinicaMVC3\ClinicaMVC3\bin\WebActivator.dll
+C:\Users\Evandro\Documents\Visual Studio 2010\Projects\ClinicaMVC3\ClinicaMVC3\bin\EntityFramework.xml
+C:\Users\Evandro\Documents\Visual Studio 2010\Projects\ClinicaMVC3\ClinicaMVC3\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\Evandro\Documents\Visual Studio 2010\Projects\ClinicaMVC3\ClinicaMVC3\obj\Debug\ClinicaMVC3.dll
+C:\Users\Evandro\Documents\Visual Studio 2010\Projects\ClinicaMVC3\ClinicaMVC3\obj\Debug\ClinicaMVC3.pdb
+C:\Projetos\ClinicaMVC3\ClinicaMVC3\bin\ClinicaMVC3.dll
+C:\Projetos\ClinicaMVC3\ClinicaMVC3\bin\ClinicaMVC3.pdb
+C:\Projetos\ClinicaMVC3\ClinicaMVC3\bin\DataAnnotationsExtensions.ClientValidation.dll
+C:\Projetos\ClinicaMVC3\ClinicaMVC3\bin\DataAnnotationsExtensions.dll
+C:\Projetos\ClinicaMVC3\ClinicaMVC3\bin\EntityFramework.dll
+C:\Projetos\ClinicaMVC3\ClinicaMVC3\bin\WebActivator.dll
+C:\Projetos\ClinicaMVC3\ClinicaMVC3\bin\EntityFramework.xml
+C:\Projetos\ClinicaMVC3\ClinicaMVC3\obj\Debug\ResolveAssemblyReference.cache
+C:\Projetos\ClinicaMVC3\ClinicaMVC3\obj\Debug\ClinicaMVC3.dll
+C:\Projetos\ClinicaMVC3\ClinicaMVC3\obj\Debug\ClinicaMVC3.pdb

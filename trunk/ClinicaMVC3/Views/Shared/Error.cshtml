@@ -7,4 +7,8 @@
 <h2>
     Desculpe, ocorreu um erro durante o processamento de sua requisição.     
 </h2>
-<span> @ViewBag.Error </span>
+@{
+    String teste = ViewBag.Error;
+    @Html.Error(teste);
+}
+

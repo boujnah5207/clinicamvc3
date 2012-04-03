@@ -31,6 +31,7 @@ namespace ClinicaMVC3
 
         protected void Application_Start()
         {
+            
             AreaRegistration.RegisterAllAreas();
 
             RegisterGlobalFilters(GlobalFilters.Filters);

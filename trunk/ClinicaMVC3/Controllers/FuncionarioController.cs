@@ -11,7 +11,7 @@ using ClinicaMVC3.Controllers;
 namespace ClinicaMVC3.Controllers
 {
 
-    [HandleError]
+    [Authorize(Roles = "Administrador")]
     public class FuncionarioController : Controller
     {
         String tituloCadastro = "Funcionários";
@@ -81,8 +81,17 @@ namespace ClinicaMVC3.Controllers
                         // Tentativa de registrar o usuário
                         if (UserName != null)
                         {
-                            MembershipUser User = Membership.GetUser(UserName);
+                            /* Criamos a Roles para a função do usuario( caso ela já não exista) */
 
+                            String strRole = Enum.GetValues(typeof(funcao)).GetValue(funcionario.funcao-1).ToString();
+                            if (!Roles.RoleExists(strRole))
+                            {
+                                Roles.CreateRole(strRole);
+                            }
+
+                  
+                            MembershipUser User = Membership.GetUser(UserName);
+                            /* Se o usuario não existe, eu crio ele e vinculo a role. */
                             if (User == null)
                             {
                                 MembershipCreateStatus createStatus;
@@ -90,13 +99,37 @@ namespace ClinicaMVC3.Controllers
 
                                 if (createStatus == MembershipCreateStatus.Success)
                                 {
-                                    FormsAuthentication.SetAuthCookie(UserName, false /* createPersistentCookie */);
+                                    if (!Roles.IsUserInRole(UserName, strRole))
+                                    {
+                                        Roles.AddUserToRole(UserName, strRole);
+                                    }
+                                    /*FormsAuthentication.SetAuthCookie(UserName, false );*/
                                     funcionario.UserId = Guid.Parse(membershipUserCreated.ProviderUserKey.ToString());
                                 }
                                 else
                                 {
                                     return Json(new { Success = 0, ex = new Exception(AccountController.ErrorCodeToString(createStatus)).Message.ToString() });
                                 }
+                            }
+                            else
+                            {
+                                MembershipUser currentUser = Membership.GetUser(UserName);
+
+                                Array funcoes = Enum.GetValues(typeof(funcao));
+
+                                for (int i = 0; i < funcoes.Length; i++)
+	                            {
+                                    if (Roles.IsUserInRole(UserName, funcoes.GetValue(i).ToString()))
+                                    {
+                                        Roles.RemoveUserFromRole(UserName, funcoes.GetValue(i).ToString());
+                                    }
+	                            }
+
+                                if (!Roles.IsUserInRole(UserName, strRole))
+                                {
+                                    Roles.AddUserToRole(UserName, strRole);
+                                }
+
                             }
                         }
 
@@ -261,9 +294,12 @@ namespace ClinicaMVC3.Controllers
             }
         }
 
+
+        //Aux
+
         private void SelectListTelefones(ClinicaEntities db)
         {
-            ViewBag.Telefones = ClinicaMVC3.Models.Telefone.SelectListTelefones(db);
+            ViewBag.Telefones = ClinicaMVC3.Controllers.TelefoneController.SelectListTelefones(db);
         }
 
         private void SelectListEspecialidades(ClinicaEntities db)
@@ -283,5 +319,57 @@ namespace ClinicaMVC3.Controllers
 
         }
 
+        public enum funcao
+        {
+            Administrador = 1,
+            Secretaria = 2,
+            Medico = 3
+        }
+
+        public static List<SelectListItem> getMedicos()
+        {
+            List<SelectListItem> list = new List<SelectListItem>();
+            using (var db = new ClinicaEntities())
+            {
+                var Medicos = db.Funcionario.Where(p => p.funcao == ((int)funcao.Medico) );
+                foreach (var item in Medicos.ToList())
+                {
+                    SelectListItem li = new SelectListItem();
+                    li.Value = item.FuncionarioId.ToString();
+                    li.Text = item.Nome;
+                    list.Add(li);
+                }
+            }
+
+            return list;
+
+        }
+
+        public static Funcionario getFuncionario(int id)
+        {
+            using (var db = new ClinicaEntities())
+            {
+                return db.Funcionario.Find(id);
+            }
+
+        }
+
+        public static String getFuncaoText(int funcaoCod)
+        {
+            Array funcaoArr = Enum.GetValues(typeof(funcao));
+            String funcaoDesc = "";
+            if (funcaoCod - 1 <= funcaoArr.Length - 1)
+            {
+                if (funcaoCod > 0)
+                {
+                    funcaoDesc = funcaoArr.GetValue(funcaoCod - 1).ToString();
+                }
+            }
+            return funcaoDesc;
+
+        }
+
     }
+
+
 }
