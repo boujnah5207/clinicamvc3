@@ -1,0 +1,55 @@
+==============================================================================================
+ *Habilitar as "Especialidades" somente quando a função do funcionário for "Medico".        
+    => Efetuar validação via JQuery                                                         
+    => Efetuar validação  via Controller.                                                   
+	
+	
+*Transformar os telefones em selecionaveis( semelhante á "Especialidade")
+	=> Paciente
+	=> Funcionario
+
+*Colocar status de consulta "Realizada
+
+*No cadastro do Paciente:
+	=> tornar o telefone obrigatório.
+	=> retirar obrigação do endereço.
+
+*No "Agendamento de consultas", incluir "cadastro rápido" de paciente.
+
+*Verificar Edit para Data e substituir no cadastro do Paciente e Consulta. http://towardsnext.wordpress.com/2009/04/10/using-jquery-ui-in-aspnet-mvc/
+	*Esta aceitando datas invalidas.
+	
+*Tratar campo FK para exibir a descrição
+
+*Modificar tela de login.
+
+*Corrigir formato da Data no datepicker.
+
+*Utilizar o JQueryUI para os Avisos <- utilizando HtmlHelper
+
+*Ao excluir um Funcionário avisar que será excluido também o "usuario" vinculado.
+
+* Revisar todos on cascade, ao deletar o medico esta deletando as consultas.
+
+* Utilizar o JQueryUI para as validações <- utilizando HtmlHelper
+
+*Tratar delete para avisar quando for deletar uma entidade ja referenciada
+
+*Na consulta, ao criar verificar se não existe uma consulta no mesmo dia e com a hora do intervalo de 30 minutos	
+==============================================================================================	
+
+*Quando o usuario for médico listar somente as consultas dele.
+	
+
+
+*Traduzir validações para o portugues.
+
+
+*Traduzir campos para o portugues.
+	=>Número do telefone, Hora e CNPJ validar com expressão regular.
+
+
+
+
+
+	
