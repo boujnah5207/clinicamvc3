@@ -27,30 +27,24 @@ namespace ClinicaMVC3.Models
         #region Primitive Properties
     	[Required(ErrorMessage="Este campo deve ser preenchido.")]
         public int FuncionarioId { get; set; }
-
     	[Required(ErrorMessage="Este campo deve ser preenchido.")]
-        [StringLength(100, ErrorMessage = "Este campo aceita no máximo 100 carácteres")]
+        [StringLength(100)]
         public string Nome { get; set; }
-
     	[Required(ErrorMessage="Este campo deve ser preenchido.")]
-        [StringLength(11,ErrorMessage="Este campo aceita no máximo 11 carácteres")]
-        [RegularExpression(@"^\d*[0-9](\d*[0-9])?$", ErrorMessage = "RG deve possuir somente números.")]
+        [StringLength(11)]
         public string RG { get; set; }
-
     	[Required(ErrorMessage="Este campo deve ser preenchido.")]
         public System.Guid UserId { get; set; }
-
     	[Required(ErrorMessage="Este campo deve ser preenchido.")]
-        [StringLength(150, ErrorMessage = "Este campo aceita no máximo 150 carácteres")]
-        [Display(Name = "Endereço")]
+        [StringLength(150)]
         public string endereco { get; set; }
-
-
     	[Required(ErrorMessage="Este campo deve ser preenchido.")]
-        [Display(Name = "Função")]
         public int funcao { get; set; }
 
         #endregion
+    
+    
+    
     
         public virtual ICollection<Consulta> Consulta { get; set; }
         public virtual ICollection<FuncionarioEspecialidade> FuncionarioEspecialidade { get; set; }
