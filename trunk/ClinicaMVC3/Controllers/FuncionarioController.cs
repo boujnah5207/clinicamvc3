@@ -37,9 +37,20 @@ namespace ClinicaMVC3.Controllers
             ViewBag.Title = tituloCadastro;
             ViewBag.Method = "Detail";
             ClinicaEntities db = new ClinicaEntities();
-            SelectListEspecialidades(db);
-            SelectListTelefones(db);
-            return View("Create", db.Funcionario.Find(id));
+            try
+            {
+                SelectListEspecialidades(db);
+                SelectListTelefones(db);
+
+                Funcionario func = db.Funcionario.Find(id);
+                return View("Create", func);
+            }
+            finally
+            {
+                db.Dispose();
+            }
+
+            
 
         }
 
@@ -75,63 +86,64 @@ namespace ClinicaMVC3.Controllers
                 ModelState.Remove("UserId");
                 if (ModelState.IsValid)
                 {
-                    using (var db = new ClinicaEntities())
+
+                    // Tentativa de registrar o usuário
+                    if (UserName != null)
                     {
+                        /* Criamos a Roles para a função do usuario( caso ela já não exista) */
 
-                        // Tentativa de registrar o usuário
-                        if (UserName != null)
+                        String strRole = Enum.GetValues(typeof(funcao)).GetValue(funcionario.funcao - 1).ToString();
+                        if (!Roles.RoleExists(strRole))
                         {
-                            /* Criamos a Roles para a função do usuario( caso ela já não exista) */
+                            Roles.CreateRole(strRole);
+                        }
 
-                            String strRole = Enum.GetValues(typeof(funcao)).GetValue(funcionario.funcao-1).ToString();
-                            if (!Roles.RoleExists(strRole))
+
+                        MembershipUser User = Membership.GetUser(UserName);
+                        /* Se o usuario não existe, eu crio ele e vinculo a role. */
+                        if (User == null)
+                        {
+                            MembershipCreateStatus createStatus;
+                            MembershipUser membershipUserCreated = Membership.CreateUser(UserName, Password, email, null, null, true, null, out createStatus);
+
+                            if (createStatus == MembershipCreateStatus.Success)
                             {
-                                Roles.CreateRole(strRole);
-                            }
-
-                  
-                            MembershipUser User = Membership.GetUser(UserName);
-                            /* Se o usuario não existe, eu crio ele e vinculo a role. */
-                            if (User == null)
-                            {
-                                MembershipCreateStatus createStatus;
-                                MembershipUser membershipUserCreated = Membership.CreateUser(UserName, Password, email, null, null, true, null, out createStatus);
-
-                                if (createStatus == MembershipCreateStatus.Success)
-                                {
-                                    if (!Roles.IsUserInRole(UserName, strRole))
-                                    {
-                                        Roles.AddUserToRole(UserName, strRole);
-                                    }
-                                    /*FormsAuthentication.SetAuthCookie(UserName, false );*/
-                                    funcionario.UserId = Guid.Parse(membershipUserCreated.ProviderUserKey.ToString());
-                                }
-                                else
-                                {
-                                    return Json(new { Success = 0, ex = new Exception(AccountController.ErrorCodeToString(createStatus)).Message.ToString() });
-                                }
-                            }
-                            else
-                            {
-                                MembershipUser currentUser = Membership.GetUser(UserName);
-
-                                Array funcoes = Enum.GetValues(typeof(funcao));
-
-                                for (int i = 0; i < funcoes.Length; i++)
-	                            {
-                                    if (Roles.IsUserInRole(UserName, funcoes.GetValue(i).ToString()))
-                                    {
-                                        Roles.RemoveUserFromRole(UserName, funcoes.GetValue(i).ToString());
-                                    }
-	                            }
-
                                 if (!Roles.IsUserInRole(UserName, strRole))
                                 {
                                     Roles.AddUserToRole(UserName, strRole);
                                 }
-
+                                /*FormsAuthentication.SetAuthCookie(UserName, false );*/
+                                funcionario.UserId = Guid.Parse(membershipUserCreated.ProviderUserKey.ToString());
+                            }
+                            else
+                            {
+                                return Json(new { Success = 0, ex = new Exception(AccountController.ErrorCodeToString(createStatus)).Message.ToString() });
                             }
                         }
+                        else
+                        {
+                            MembershipUser currentUser = Membership.GetUser(UserName);
+
+                            Array funcoes = Enum.GetValues(typeof(funcao));
+
+                            for (int i = 0; i < funcoes.Length; i++)
+                            {
+                                if (Roles.IsUserInRole(UserName, funcoes.GetValue(i).ToString()))
+                                {
+                                    Roles.RemoveUserFromRole(UserName, funcoes.GetValue(i).ToString());
+                                }
+                            }
+
+                            if (!Roles.IsUserInRole(UserName, strRole))
+                            {
+                                Roles.AddUserToRole(UserName, strRole);
+                            }
+
+                        }
+                    }
+
+                    using (var db = new ClinicaEntities())
+                    {
 
                         // Se o código do Funcionario é maior que zero, entendemos que existe registro para tal.
                         // Então nós "atualizaremos" ele.                    
@@ -218,9 +230,17 @@ namespace ClinicaMVC3.Controllers
             ViewBag.Title = tituloCadastro;
             ViewBag.Method = "Edit";
             ClinicaEntities db = new ClinicaEntities();
-            SelectListEspecialidades(db);
-            SelectListTelefones(db);
-            return View("Create", db.Funcionario.Find(id));
+            try
+            {
+                SelectListEspecialidades(db);
+                SelectListTelefones(db);
+                return View("Create", db.Funcionario.Find(id));
+
+            }
+            finally
+            {
+                db.Dispose();
+            }
         }
 
         //
@@ -233,10 +253,17 @@ namespace ClinicaMVC3.Controllers
             try
             {
                 ClinicaEntities db = new ClinicaEntities();
+                try
+                {
+                    db.Entry(funcionario).State = System.Data.EntityState.Modified;
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+                finally
+                {
+                    db.Dispose();
+                }
 
-                db.Entry(funcionario).State = System.Data.EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
             }
             catch (Exception e)
             {

@@ -3,8 +3,7 @@
 @{
 }
 
-<h2>@ViewBag.Title</h2>
-<h3>Inserir Novo</h3>
+<h2>@ViewBag.Title - Inserir Novo</h2>
 
 @using (Html.BeginForm()) {
     @Html.ValidationSummary(true)
@@ -18,12 +17,11 @@
             @Html.ValidationMessageFor(model => model.Descricao)
         </div>
 
-        <p>
-            <input type="submit" value="Salvar" />
-        </p>
     </fieldset>
-}
-
-<div>
+    <div id="footercrud">
+    <input type="submit" value="Salvar" />
     @Html.ActionLink("Voltar", "Index")
 </div>
+}
+
+

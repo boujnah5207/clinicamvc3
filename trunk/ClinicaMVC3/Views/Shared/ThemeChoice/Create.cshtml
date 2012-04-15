@@ -1,0 +1,38 @@
+﻿@using System.IO;
+<script type="text/javascript">
+    $(document).ready(
+        function () {
+            $("select#themeselected").val("@Session["ThemeSelected"]");
+        }
+    );
+</script>
+
+@functions{
+    static List<SelectListItem> directoryListing(string path)
+    {
+
+        List<SelectListItem> list = new List<SelectListItem>();
+
+        DirectoryInfo di = new DirectoryInfo(path);
+        DirectoryInfo[] rgDirs = di.GetDirectories();
+
+        foreach (DirectoryInfo dir in rgDirs)
+        {
+
+            SelectListItem li = new SelectListItem();
+            li.Value = dir.Name;
+            li.Text = dir.Name;
+            list.Add(li);
+
+        }
+        return list;
+    }
+}
+@using (Html.BeginForm("Create", "ThemeChoice", FormMethod.Post, new { id = "form1" }))
+{
+    {                        
+        @Html.LabelForModel("Selecione o tema:")
+        @Html.DropDownList("themeselected", directoryListing(@Server.MapPath("\\App_Themes\\themes\\")).AsEnumerable());
+    }
+    <input type="submit" name="save" value="Escolher" />
+}
