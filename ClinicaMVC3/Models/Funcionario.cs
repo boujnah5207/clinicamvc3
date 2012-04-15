@@ -20,9 +20,7 @@ namespace ClinicaMVC3.Models
             this.Consulta = new HashSet<Consulta>();
             this.FuncionarioEspecialidade = new HashSet<FuncionarioEspecialidade>();
             this.FuncionarioTelefone = new HashSet<FuncionarioTelefone>();
-        }
-    
-    
+        }  
     
         #region Primitive Properties
     	[Required(ErrorMessage="Este campo deve ser preenchido.")]
@@ -42,9 +40,6 @@ namespace ClinicaMVC3.Models
         public int funcao { get; set; }
 
         #endregion
-    
-    
-    
     
         public virtual ICollection<Consulta> Consulta { get; set; }
         public virtual ICollection<FuncionarioEspecialidade> FuncionarioEspecialidade { get; set; }

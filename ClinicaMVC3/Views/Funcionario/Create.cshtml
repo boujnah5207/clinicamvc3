@@ -2,9 +2,9 @@
 @{
 }
 <input  id="inputMethod" type=hidden value="@ViewBag.Method"/>
-<h2>@ViewBag.Title</h2>
-<h3>
-    Inserir Novo</h3>
+<h2>@ViewBag.Title - Inserir Novo</h2>
+<p>
+</p>
 <script type="text/javascript">
     $(document).ready
 	(
@@ -102,6 +102,7 @@
     Html.EnableClientValidation(true);
     @Html.ValidationSummary(true)
     <fieldset>
+        <legend>Informações pessoais</legend>
         @Html.HiddenFor(model => model.FuncionarioId)
         @Html.HiddenFor(model => model.UserId)
         <div class="editor-label">
@@ -183,14 +184,14 @@
 
             }    
         
-    <div>
+    <div id="footercrud">
         @if (ViewBag.Method == "Detail")
         {
-            @Html.ActionLink("Editar", "Edit", new { id = Model.FuncionarioId });
+        @Html.ActionLink("Editar", "Edit", new { id = Model.FuncionarioId });
         }
         else
         {
-            <input type="button" value="Salvar" onclick="Save()" />
+        <input type="button" value="Salvar" onclick="Save()" />
         }        
         @Html.ActionLink("Voltar", "Index")
     </div>

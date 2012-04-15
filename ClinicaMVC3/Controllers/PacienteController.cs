@@ -36,8 +36,16 @@ namespace ClinicaMVC3.Controllers
             ViewBag.Title = tituloCadastro;
             ViewBag.Method = "Detail";
             ClinicaEntities db = new ClinicaEntities();
-            SelectListTelefones(db);
-            return View("Create", db.Paciente.Find(id));
+            try
+            {
+                SelectListTelefones(db);
+                return View("Create", db.Paciente.Find(id));
+
+            }
+            finally
+            {
+                db.Dispose();
+            }
         }
 
         //
@@ -135,8 +143,15 @@ namespace ClinicaMVC3.Controllers
             ViewBag.Title = tituloCadastro;
             ViewBag.Method = "Edit";
             ClinicaEntities db = new ClinicaEntities();
-            SelectListTelefones(db);
-            return View("Create", db.Paciente.Find(id));
+            try
+            {
+                SelectListTelefones(db);
+                return View("Create", db.Paciente.Find(id));
+            }
+            finally
+            {
+                db.Dispose();
+            }
         }
 
         //
@@ -150,14 +165,20 @@ namespace ClinicaMVC3.Controllers
             {
                 ClinicaEntities db = new ClinicaEntities();
 
-                db.Entry(paciente).State = System.Data.EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                try
+                {
+                    db.Entry(paciente).State = System.Data.EntityState.Modified;
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+                finally
+                {
+                    db.Dispose();
+                }
             }
             catch (Exception e)
             {
-                ViewBag.Error = e;
-                
+                ViewBag.Error = e; 
                 return View("Error");
             }
         }
