@@ -22,9 +22,6 @@ namespace ClinicaMVC3.Models
             this.aspnet_Roles = new HashSet<aspnet_Roles>();
             this.aspnet_Users = new HashSet<aspnet_Users>();
         }
-
-
-
     
     
     

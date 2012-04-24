@@ -365,12 +365,14 @@ td.details {
 	background-color: #99B3FF;
 }
 
-table.display tr.even.row_selected td {
-	background-color: #B0BED9;
+table.display tr.even.row_selected td
+{
+    background-color: #CCCCCC;
 }
 
-table.display tr.odd.row_selected td {
-	background-color: #9FAFD1;
+table.display tr.odd.row_selected td
+{
+    background-color: #C0C0C0;
 }
 
 

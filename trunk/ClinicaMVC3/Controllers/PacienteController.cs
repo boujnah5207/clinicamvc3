@@ -39,8 +39,9 @@ namespace ClinicaMVC3.Controllers
             try
             {
                 SelectListTelefones(db);
-                return View("Create", db.Paciente.Find(id));
-
+                Paciente paciente = db.Paciente.Find(id);
+                CarregarAssociacoes(db, paciente);
+                return View("Create", paciente);
             }
             finally
             {
@@ -146,7 +147,9 @@ namespace ClinicaMVC3.Controllers
             try
             {
                 SelectListTelefones(db);
-                return View("Create", db.Paciente.Find(id));
+                Paciente paciente = db.Paciente.Find(id);
+                CarregarAssociacoes(db, paciente);
+                return View("Create", paciente);
             }
             finally
             {
@@ -290,6 +293,13 @@ namespace ClinicaMVC3.Controllers
             {
                 return db.Paciente.Find(Id);
             }
+        }
+
+        private static void CarregarAssociacoes(ClinicaEntities db, Paciente paciente)
+        {
+            db.Entry(paciente).Collection("PacienteTelefone").Load();            
+
+            
         }
 
     }

@@ -20,23 +20,34 @@ namespace ClinicaMVC3.Models
             this.Consulta = new HashSet<Consulta>();
             this.FuncionarioEspecialidade = new HashSet<FuncionarioEspecialidade>();
             this.FuncionarioTelefone = new HashSet<FuncionarioTelefone>();
-        }  
+        }
+    
+    
     
         #region Primitive Properties
     	[Required(ErrorMessage="Este campo deve ser preenchido.")]
         public int FuncionarioId { get; set; }
+
     	[Required(ErrorMessage="Este campo deve ser preenchido.")]
-        [StringLength(100)]
+        [StringLength(100, ErrorMessage = "Este campo aceita no máximo 100 carácteres")]
         public string Nome { get; set; }
+
     	[Required(ErrorMessage="Este campo deve ser preenchido.")]
-        [StringLength(11)]
+        [StringLength(11,ErrorMessage="Este campo aceita no máximo 11 carácteres")]
+        [RegularExpression(@"^\d*[0-9](\d*[0-9])?$", ErrorMessage = "RG deve possuir somente números.")]
         public string RG { get; set; }
+
     	[Required(ErrorMessage="Este campo deve ser preenchido.")]
         public System.Guid UserId { get; set; }
+
     	[Required(ErrorMessage="Este campo deve ser preenchido.")]
-        [StringLength(150)]
+        [StringLength(150, ErrorMessage = "Este campo aceita no máximo 150 carácteres")]
+        [Display(Name = "Endereço")]
         public string endereco { get; set; }
+
+
     	[Required(ErrorMessage="Este campo deve ser preenchido.")]
+        [Display(Name = "Função")]
         public int funcao { get; set; }
 
         #endregion

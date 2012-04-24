@@ -58,10 +58,10 @@
                         contentType: 'application/json;',
                         dataType: 'json',
                         success: function (result) {
-                            $("#PacienteId").clearSelect();
-                            $("#PacienteId").fillSelect(result);
+                            $("#formConsulta #PacienteId").clearSelect();
+                            $("#formConsulta #PacienteId").fillSelect(result);
 
-                            $('#PacienteId option').each(function () {
+                            $('#formConsulta #PacienteId option').each(function () {
                                 if ($(this).val() == result[result.length - 1].Value) {
                                     $(this).attr('selected', true);
                                 }
@@ -91,7 +91,7 @@
     Html.RenderAction("PacienteDialog","Paciente");   
 }
 </div>
-@using (Html.BeginForm())
+@using (Html.BeginForm("Create", "Consulta", FormMethod.Post, new { id = "formConsulta" }))
 {
     @Html.ValidationSummary(true)
     <fieldset>

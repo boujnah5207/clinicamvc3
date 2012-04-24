@@ -18,13 +18,16 @@ namespace ClinicaMVC3.Models
         public ClinicaEntities()
             : base("name=ClinicaEntities")
         {
+            /*Database.CreateIfNotExists();*/
         }
     
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
+            
             throw new UnintentionalCodeFirstException();
-        }
-    
+           
+        }        
+
         public DbSet<Consulta> Consulta { get; set; }
         public DbSet<Especialidade> Especialidade { get; set; }
         public DbSet<Funcionario> Funcionario { get; set; }
