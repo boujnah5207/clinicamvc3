@@ -7,6 +7,7 @@ using ClinicaMVC3.Models;
 using System.Data;
 using System.Web.Security;
 using ClinicaMVC3.Controllers;
+using System.Data.Entity;
 //Funcionario
 namespace ClinicaMVC3.Controllers
 {
@@ -43,6 +44,11 @@ namespace ClinicaMVC3.Controllers
                 SelectListTelefones(db);
 
                 Funcionario func = db.Funcionario.Find(id);
+
+
+                CarregarAssociacoes(db, func);
+
+
                 return View("Create", func);
             }
             finally
@@ -151,6 +157,7 @@ namespace ClinicaMVC3.Controllers
                         {
                             #region Tratamento dos Telefones
                             var selFuncionarioTelefone = db.FuncionarioTelefone.Where(p => p.FuncionarioId == funcionario.FuncionarioId);
+                           
 
                             foreach (FuncionarioTelefone pt in selFuncionarioTelefone)
                             {
@@ -234,7 +241,11 @@ namespace ClinicaMVC3.Controllers
             {
                 SelectListEspecialidades(db);
                 SelectListTelefones(db);
-                return View("Create", db.Funcionario.Find(id));
+
+                Funcionario func = db.Funcionario.Find(id);
+
+                CarregarAssociacoes(db, func);
+                return View("Create", func);
 
             }
             finally
@@ -394,6 +405,14 @@ namespace ClinicaMVC3.Controllers
             }
             return funcaoDesc;
 
+        }
+
+        private static void CarregarAssociacoes(ClinicaEntities db, Funcionario func)
+        {
+            db.Entry(func).Collection("FuncionarioTelefone").Load();
+            db.Entry(func).Collection("FuncionarioEspecialidade").Load();
+            db.Entry(func).Reference("aspnet_Users").Load();
+            db.Entry(func.aspnet_Users).Reference("aspnet_Membership").Load();
         }
 
     }

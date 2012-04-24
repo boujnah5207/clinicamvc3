@@ -5,9 +5,9 @@
     function Save() {
         var isValid = false;
 
-        isValid = ($('form').validate().element($('#Nome')));
-        isValid = ($('form').validate().element($('#Endereco'))) ? isValid : false;
-        isValid = ($('form').validate().element($('#DataNascimento'))) ? isValid : false;
+        isValid = ($('#formPaciente').validate().element($('#Nome')));
+        isValid = ($('#formPaciente').validate().element($('#Endereco'))) ? isValid : false;
+        isValid = ($('#formPaciente').validate().element($('#DataNascimento'))) ? isValid : false;
 
         if (isValid) {
 
@@ -53,7 +53,7 @@
                         }
                     }
                     else {
-                        var validator = $("#form1").validate();
+                        var validator = $("#formPaciente").validate();
                         validator.showErrors({ "Numero": result.ex });
                     }
                 }
@@ -68,7 +68,7 @@
 </script>
 
 
-@using (Html.BeginForm("Create", "Paciente", FormMethod.Post, new { id="form1" }))
+@using (Html.BeginForm("Create", "Paciente", FormMethod.Post, new { id = "formPaciente" }))
 {
     
     @Html.ValidationSummary(true)
@@ -128,7 +128,7 @@
 
     
     
-            <div id="footer" class="ui-corner-bottom" >
+    <div id="footercrud">
   
     
     @if (ViewBag.Method == "Detail")
@@ -139,8 +139,9 @@
     {
      <input type="button" value="Salvar" onclick="Save()" />
     }
-@if (!((ViewBag.isDialog != null)&&(ViewBag.isDialog == true))) {
-    @Html.ActionLink("Voltar", "Index")
-}
+    @if (!((ViewBag.isDialog != null) && (ViewBag.isDialog == true)))
+    {
+        @Html.ActionLink("Voltar", "Index")
+    }
 </div>
 }

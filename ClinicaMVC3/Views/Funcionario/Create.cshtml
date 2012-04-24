@@ -21,16 +21,16 @@
     function Save() {
         var isValid = false;
 
-        isValid = ($('form').validate().element($('#Nome')));
-        isValid = ($('form').validate().element($('#RG'))) ? isValid : false;
-        isValid = ($('form').validate().element($('#endereco'))) ? isValid : false;
-        isValid = ($('form').validate().element($('#funcao'))) ? isValid : false;
+        isValid = ($('#formFuncionario').validate().element($('#Nome')));
+        isValid = ($('#formFuncionario').validate().element($('#RG'))) ? isValid : false;
+        isValid = ($('#formFuncionario').validate().element($('#endereco'))) ? isValid : false;
+        isValid = ($('#formFuncionario').validate().element($('#funcao'))) ? isValid : false;
         if ($('#inputMethod').val() != "Edit") 
         {
-            isValid = ($('form').validate().element($('#UserName'))) ? isValid : false;
-            isValid = ($('form').validate().element($('#Password'))) ? isValid : false;
-            isValid = ($('form').validate().element($('#Email'))) ? isValid : false;
-            isValid = ($('form').validate().element($('#ConfirmPassword'))) ? isValid : false;
+            isValid = ($('#formFuncionario').validate().element($('#UserName'))) ? isValid : false;
+            isValid = ($('#formFuncionario').validate().element($('#Password'))) ? isValid : false;
+            isValid = ($('#formFuncionario').validate().element($('#Email'))) ? isValid : false;
+            isValid = ($('#formFuncionario').validate().element($('#ConfirmPassword'))) ? isValid : false;
         }
 
         if (isValid) {
@@ -97,7 +97,7 @@
     }
 
 </script>
-@using (Html.BeginForm())
+@using (Html.BeginForm("Create", "Funcionario", FormMethod.Post, new { id = "formFuncionario" }))
 {
     Html.EnableClientValidation(true);
     @Html.ValidationSummary(true)

@@ -26,9 +26,13 @@ namespace ClinicaMVC3.Models
         #region Primitive Properties
     	[Required(ErrorMessage="Este campo deve ser preenchido.")]
         public int TelefoneId { get; set; }
+
     	[Required(ErrorMessage="Este campo deve ser preenchido.")]
-        [StringLength(15)]
+        [StringLength(15, ErrorMessage = "Este campo aceita no máximo 15 carácteres")]
+        [Display(Name="Número")]
+        [RegularExpression(@"^\(?\d{3}\)?[\s-]?\d{4}-?\d{4}$", ErrorMessage = "Entre com o formato correto: (0xx) 0000-0000")]
         public string Numero { get; set; }
+
     	[Required(ErrorMessage="Este campo deve ser preenchido.")]
         public int Tipo { get; set; }
 
