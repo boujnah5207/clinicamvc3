@@ -1,0 +1,1 @@
+Software ASP.NET usando padrões de projeto MVC3 e com arquitetura para persistência de dados ADO.NET Entity Framework.
